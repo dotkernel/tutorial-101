@@ -1,0 +1,84 @@
+{
+    "name": "dotkernel/light",
+    "type": "project",
+    "description": "Dotkernel Light Application",
+    "license": "MIT",
+    "homepage": "https://github.com/dotkernel/light",
+    "keywords": [
+        "dotkernel",
+        "mezzio",
+        "laminas",
+        "middleware"
+    ],
+    "authors": [
+        {
+            "name": "Dotkernel Team",
+            "email": "team@dotkernel.com"
+        }
+    ],
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "dotkernel/*": true,
+            "composer/package-versions-deprecated": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "laminas/laminas-component-installer": true
+        }
+    },
+    "require": {
+        "php": "~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0",
+        "dotkernel/dot-errorhandler": "^4.4.0",
+        "laminas/laminas-component-installer": "^3.5.0",
+        "laminas/laminas-config-aggregator": "^1.17.0",
+        "mezzio/mezzio": "^3.24.0",
+        "mezzio/mezzio-fastroute": "^3.13.0",
+        "mezzio/mezzio-twigrenderer": "^2.17.0"
+    },
+    "require-dev": {
+        "filp/whoops": "^2.17.0",
+        "laminas/laminas-coding-standard": "^3.0.1",
+        "laminas/laminas-development-mode": "^3.13.0",
+        "phpstan/phpstan": "^2.1.2",
+        "phpstan/phpstan-phpunit": "^2.0.4",
+        "phpunit/phpunit": "^10.5.45",
+        "roave/security-advisories": "dev-master",
+        "symfony/var-dumper": "^7.2.3",
+        "vincentlanglet/twig-cs-fixer": "^3.5.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Light\\App\\": "src/App/src/",
+            "Light\\Page\\": "src/Page/src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "LightTest\\Unit\\": "test/Unit/"
+        }
+    },
+    "scripts": {
+        "post-create-project-cmd": [
+            "@development-enable"
+        ],
+        "post-update-cmd": [
+            "php bin/composer-post-install-script.php"
+        ],
+        "development-disable": "laminas-development-mode disable",
+        "development-enable": "laminas-development-mode enable",
+        "development-status": "laminas-development-mode status",
+        "check": [
+            "@cs-check",
+            "@twig-cs-check",
+            "@static-analysis",
+            "@test"
+        ],
+        "clear-config-cache": "php bin/clear-config-cache.php",
+        "cs-check": "phpcs",
+        "cs-fix": "phpcbf",
+        "serve": "php -S 0.0.0.0:8080 -t public/",
+        "static-analysis": "phpstan analyse --memory-limit 1G",
+        "test": "phpunit --colors=always",
+        "twig-cs-check": "vendor/bin/twig-cs-fixer lint --config=config/twig-cs-fixer.php",
+        "twig-cs-fix": "vendor/bin/twig-cs-fixer lint --config=config/twig-cs-fixer.php --fix"
+    }
+}
