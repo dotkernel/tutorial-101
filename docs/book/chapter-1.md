@@ -4,19 +4,7 @@
 
 The first step is to add alongside your current packages the required entries for our Doctrine installation. We would add the following to our `composer.json` file located in our root folder:
 
-```json
-{
-    "require": {
-        "dotkernel/dot-cache": "^4.0",
-        "ramsey/uuid": "^4.5.0",
-        "ramsey/uuid-doctrine": "^2.1.0",
-        "roave/psr-container-doctrine": "^5.2.2"
-    },
-    "require-dev": {
-        "phpstan/phpstan-doctrine": "^2.0.3"
-    }
-}
-```
+![composer](../images/composer.png)
 
 `dotkernel/dot-cache`
 
@@ -66,64 +54,18 @@ Our new `src/App/src/ConfigProvider.php` class would look like this now:
 We also require a new file `config/cli-config.php`.
 It initializes and returns a `DependencyFactory` that Doctrine Migrations uses to run migrations.
 
-```php
-<?php
-
-declare(strict_types=1);
-
-use Doctrine\Migrations\Configuration\EntityManager\ExistingEntityManager;
-use Doctrine\Migrations\Configuration\Migration\ConfigurationArray;
-use Doctrine\Migrations\DependencyFactory;
-use Doctrine\ORM\EntityManager;
-
-$container = require 'config/container.php';
-
-$entityManager = $container->get(EntityManager::class);
-$entityManager->getEventManager();
-
-return DependencyFactory::fromEntityManager(
-    new ConfigurationArray($container->get('config')['doctrine']['migrations']),
-    new ExistingEntityManager($entityManager)
-);
-```
+![cli-config](../images/cli-config.png)
 
 ## Running doctrine
 
 Now that everything has been configured we only need to do one last thing, to create an executable for the Doctrine CLI.
 In our case we will create it as `/bin/doctrine`
 
-```php
-#!/usr/bin/env php
-<?php
-
-declare(strict_types=1);
-
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Tools\Console\ConsoleRunner;
-use Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider;
-
-require_once 'vendor/autoload.php';
-
-$container = require 'config/container.php';
-
-$entityManager = $container->get(EntityManager::class);
-$entityManager->getEventManager();
-
-ConsoleRunner::run(new SingleManagerProvider($entityManager));
-```
+![bin/doctrine](../images/doctrine.png)
 
 (Optional) To keep things tidy we recommend to make an executable for the migrations of Doctrine as well for example `/bin/doctrine-migrations`:
 
-```php
-#!/usr/bin/env php
-<?php
-
-declare(strict_types=1);
-
-namespace Doctrine\Migrations;
-
-require __DIR__ . '/../vendor/doctrine/migrations/bin/doctrine-migrations.php';
-```
+![bin/doctrine-migrations](../images/doctrine-migrations.png)
 
 Now by running the command bellow we should see the Doctrine CLI version alongside its available commands:
 
