@@ -26,7 +26,7 @@ $databases = [
 ];
 
 return [
-    'databases' => $databases,
+    'databases'   => $databases,
     'doctrine'    => [
         'connection' => [
             'orm_default' => [

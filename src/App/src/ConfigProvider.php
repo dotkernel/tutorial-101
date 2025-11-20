@@ -6,24 +6,78 @@ namespace Light\App;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\EntityListenerResolver as EntityListenerResolverInterface;
+use Doctrine\Persistence\Mapping\Driver\MappingDriver;
 use Doctrine\Persistence\Mapping\Driver\MappingDriverChain;
 use Dot\Cache\Adapter\ArrayAdapter;
 use Dot\Cache\Adapter\FilesystemAdapter;
 use Light\App\Factory\GetIndexViewHandlerFactory;
 use Light\App\Handler\GetIndexViewHandler;
 use Mezzio\Application;
-use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
-use Ramsey\Uuid\Doctrine\UuidBinaryType;
 use Ramsey\Uuid\Doctrine\UuidType;
 use Roave\PsrContainerDoctrine\EntityManagerFactory;
+use Symfony\Component\Cache\Adapter\AdapterInterface;
 
 use function getcwd;
+
+/**
+ * @phpstan-type ConfigType array{
+ *      dependencies: DependenciesType,
+ *      doctrine: DoctrineConfigType,
+ *      resultCacheLifetime: int,
+ * }
+ * @phpstan-type DoctrineConfigType array{
+ *      cache: array{
+ *          array: array{
+ *              class: class-string<AdapterInterface>,
+ *          },
+ *          filesystem: array{
+ *              class: class-string<AdapterInterface>,
+ *              directory: non-empty-string,
+ *              namespace: non-empty-string,
+ *          },
+ *      },
+ *      configuration: array{
+ *          orm_default: array{
+ *              entity_listener_resolver: class-string<EntityListenerResolverInterface>,
+ *              result_cache: non-empty-string,
+ *              metadata_cache: non-empty-string,
+ *              query_cache: non-empty-string,
+ *              hydration_cache: non-empty-string,
+ *              typed_field_mapper: non-empty-string|null,
+ *              second_level_cache: array{
+ *                  enabled: bool,
+ *                  default_lifetime: int,
+ *                  default_lock_lifetime: int,
+ *                  file_lock_region_directory: string,
+ *                  regions: string[],
+ *               },
+ *          },
+ *      },
+ *      driver: array{
+ *          orm_default: array{
+ *              class: class-string<MappingDriver>,
+ *          },
+ *      },
+ *      migrations: array{
+ *          migrations_paths: array<non-empty-string, non-empty-string>,
+ *          all_or_nothing: bool,
+ *          check_database_platform: bool,
+ *      },
+ *      types: array<non-empty-string, class-string>,
+ * }
+ * @phpstan-type DependenciesType array{
+ *       factories: array<class-string|non-empty-string, class-string|non-empty-string>,
+ *       aliases: array<class-string|non-empty-string, class-string|non-empty-string>,
+ * }
+ */
 
 class ConfigProvider
 {
     /**
     @return array{
      *     dependencies: array<mixed>,
+     *     doctrine: array<mixed>,
      *     templates: array<mixed>,
      * }
      */
@@ -37,10 +91,7 @@ class ConfigProvider
     }
 
     /**
-     * @return array{
-     *     delegators: array<class-string, array<class-string>>,
-     *     factories: array<class-string, class-string>,
-     * }
+     * @return DependenciesType
      */
     public function getDependencies(): array
     {
@@ -83,6 +134,9 @@ class ConfigProvider
         ];
     }
 
+    /**
+     * @return DoctrineConfigType
+     */
     private function getDoctrineConfig(): array
     {
         return [
@@ -98,12 +152,13 @@ class ConfigProvider
             ],
             'configuration' => [
                 'orm_default' => [
-                    'result_cache'       => 'filesystem',
-                    'metadata_cache'     => 'filesystem',
-                    'query_cache'        => 'filesystem',
-                    'hydration_cache'    => 'array',
-                    'typed_field_mapper' => null,
-                    'second_level_cache' => [
+                    'entity_listener_resolver' => EntityListenerResolverInterface::class,
+                    'result_cache'             => 'filesystem',
+                    'metadata_cache'           => 'filesystem',
+                    'query_cache'              => 'filesystem',
+                    'hydration_cache'          => 'array',
+                    'typed_field_mapper'       => null,
+                    'second_level_cache'       => [
                         'enabled'                    => true,
                         'default_lifetime'           => 3600,
                         'default_lock_lifetime'      => 60,
