@@ -112,14 +112,6 @@ class ConfigProvider
                     ],
                 ],
             ],
-            'connection'    => [
-                'orm_default' => [
-                    'doctrine_mapping_types' => [
-                        UuidBinaryType::NAME            => 'binary',
-                        UuidBinaryOrderedTimeType::NAME => 'binary',
-                    ],
-                ],
-            ],
             'driver'        => [
                 // The default metadata driver aggregates all other drivers into a single one.
                 // Override `orm_default` only if you know what you're doing.
@@ -136,9 +128,7 @@ class ConfigProvider
                 'check_database_platform' => true,
             ],
             'types'         => [
-                UuidType::NAME                  => UuidType::class,
-                UuidBinaryType::NAME            => UuidBinaryType::class,
-                UuidBinaryOrderedTimeType::NAME => UuidBinaryOrderedTimeType::class,
+                UuidType::NAME => UuidType::class,
             ],
         ];
     }
