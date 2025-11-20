@@ -1,4 +1,4 @@
-docs_dir: docs/book/v1
+docs_dir: docs/book
 site_dir: docs/html
 extra:
   project: Tutorial-101
@@ -8,7 +8,7 @@ extra:
 nav:
   - Home: index.md
   - book:
-      - Chapter 1: book/v1/chapter-1.md
+      - Chapter 1: v1/chapter-1.md
 site_name: Dotkernel 101
 site_description: "Beginner tutorial for using Dotkernel"
 repo_url: "https://github.com/dotkernel/tutorial-101"

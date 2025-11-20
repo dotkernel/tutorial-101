@@ -87,6 +87,87 @@ Our new `src/App/src/ConfigProvider.php` class would look like this now:
 ![Config provider factories update](images/config-provider-1.png)
 ![Doctrine config function](images/config-provider-2.png)
 
+```php
+public function __invoke(): array
+{
+    return [
+        'dependencies' => $this->getDependencies(),
+        'doctrine'     => $this->getDoctrineConfig(),
+        'templates'    => $this->getTemplates(),
+    ];
+}
+
+public function getDependencies(): array
+{
+    return [
+        'delegators' => [
+            Application::class => [
+                RoutesDelegator::class,
+            ],
+        ],
+        'factories'  => [
+            'doctrine.entity_manager.orm_default' => EntityManagerFactory::class,
+            GetIndexViewHandler::class            => GetIndexViewHandlerFactory::class,
+        ],
+        'aliases'    => [
+            EntityManager::class          => 'doctrine.entity_manager.orm_default',
+            EntityManagerInterface::class => 'doctrine.entity_manager.orm_default',
+        ],
+    ];
+}
+    
+private function getDoctrineConfig(): array
+{
+    return [
+        'cache'         => [
+            'array'      => [
+                'class' => ArrayAdapter::class,
+            ],
+            'filesystem' => [
+                'class'     => FilesystemAdapter::class,
+                'directory' => getcwd() . '/data/cache',
+                'namespace' => 'doctrine',
+            ],
+        ],
+        'configuration' => [
+            'orm_default' => [
+                'entity_listener_resolver' => EntityListenerResolverInterface::class,
+                'result_cache'             => 'filesystem',
+                'metadata_cache'           => 'filesystem',
+                'query_cache'              => 'filesystem',
+                'hydration_cache'          => 'array',
+                'typed_field_mapper'       => null,
+                'second_level_cache'       => [
+                    'enabled'                    => true,
+                    'default_lifetime'           => 3600,
+                    'default_lock_lifetime'      => 60,
+                    'file_lock_region_directory' => '',
+                    'regions'                    => [],
+                ],
+            ],
+        ],
+        'driver'        => [
+            // The default metadata driver aggregates all other drivers into a single one.
+            // Override `orm_default` only if you know what you're doing.
+            'orm_default' => [
+                'class' => MappingDriverChain::class,
+            ],
+        ],
+        'migrations'    => [
+            // Modify this line based on where you would like to have you migrations
+            'migrations_paths'        => [
+                'Migrations' => 'src/Migrations',
+            ],
+            'all_or_nothing'          => true,
+            'check_database_platform' => true,
+        ],
+        'types'         => [
+            UuidType::NAME => UuidType::class,
+        ],
+    ];
+}
+```
+
 We also require a new file `config/cli-config.php`.
 It initializes and returns a `DependencyFactory` that Doctrine Migrations uses to run migrations.
 
