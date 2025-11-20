@@ -21,7 +21,8 @@ class ConfigProvider
 {
     /**
     @return array{
-     *     dependencies: array<mixed>,
+     *     dependencies: array<mixed>
+     *     doctrine: array<mixed>,
      *     templates: array<mixed>,
      * }
      */
