@@ -128,7 +128,7 @@ class ConfigProvider
                 'check_database_platform' => true,
             ],
             'types'         => [
-                UuidType::NAME                  => UuidType::class,
+                UuidType::NAME => UuidType::class,
             ],
         ];
     }
