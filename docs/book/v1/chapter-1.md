@@ -131,7 +131,6 @@ private function getDoctrineConfig(): array
         ],
         'configuration' => [
             'orm_default' => [
-                'entity_listener_resolver' => EntityListenerResolverInterface::class,
                 'result_cache'             => 'filesystem',
                 'metadata_cache'           => 'filesystem',
                 'query_cache'              => 'filesystem',
