@@ -6,7 +6,6 @@ namespace Light\App;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping\EntityListenerResolver as EntityListenerResolverInterface;
 use Doctrine\Persistence\Mapping\Driver\MappingDriverChain;
 use Dot\Cache\Adapter\ArrayAdapter;
 use Dot\Cache\Adapter\FilesystemAdapter;
@@ -97,7 +96,6 @@ class ConfigProvider
             ],
             'configuration' => [
                 'orm_default' => [
-                    'entity_listener_resolver' => EntityListenerResolverInterface::class,
                     'result_cache'             => 'filesystem',
                     'metadata_cache'           => 'filesystem',
                     'query_cache'              => 'filesystem',
