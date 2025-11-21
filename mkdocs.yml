@@ -8,9 +8,9 @@ extra:
 nav:
   - Home: index.md
   - book:
-      - Chapter 1: book/chapter-1.md
-site_name: 101.dotkernel
+      - Chapter 1: v1/chapter-1.md
+site_name: Dotkernel 101
 site_description: "Beginner tutorial for using Dotkernel"
-repo_url: "https://github.com/dotkernel/tutorial-101#"
+repo_url: "https://github.com/dotkernel/tutorial-101"
 plugins:
   - search
