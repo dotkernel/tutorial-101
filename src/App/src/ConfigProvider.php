@@ -12,8 +12,6 @@ use Dot\Cache\Adapter\FilesystemAdapter;
 use Light\App\Factory\GetIndexViewHandlerFactory;
 use Light\App\Handler\GetIndexViewHandler;
 use Mezzio\Application;
-use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
-use Ramsey\Uuid\Doctrine\UuidBinaryType;
 use Ramsey\Uuid\Doctrine\UuidType;
 use Roave\PsrContainerDoctrine\EntityManagerFactory;
 
@@ -118,14 +116,6 @@ class ConfigProvider
                 'orm_default' => [
                     'class' => MappingDriverChain::class,
                 ],
-            ],
-            'migrations'    => [
-                // Modify this line based on where you would like to have you migrations
-                'migrations_paths'        => [
-                    'Migrations' => 'src/Migrations',
-                ],
-                'all_or_nothing'          => true,
-                'check_database_platform' => true,
             ],
             'types'         => [
                 UuidType::NAME => UuidType::class,
