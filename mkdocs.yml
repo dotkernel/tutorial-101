@@ -7,7 +7,8 @@ extra:
     - v1
 nav:
   - Home: index.md
-  - book:
+  - Tutorial:
+      - Introduction: v1/introduction.md
       - Chapter 1: v1/chapter-1.md
 site_name: Dotkernel 101
 site_description: "Beginner tutorial for using Dotkernel"
