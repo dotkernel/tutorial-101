@@ -167,7 +167,7 @@
                         
                             
                             
-                                <li class="breadcrumb-item">book</li>
+                                <li class="breadcrumb-item">Tutorial</li>
                             
                         
                     
@@ -202,8 +202,14 @@
                     
                         
                             <li class="subnavigation__list-item">
-                                <span class="subnavigation__headline">book</span>
+                                <span class="subnavigation__headline">Tutorial</span>
                                 <ul class="subnavigation__list">
+                                    
+                                        
+<li class="subnavigation__list-item ">
+    <a href="../introduction/" class="subnavigation__link">Introduction</a>
+</li>
+
                                     
                                         
 <li class="subnavigation__list-item subnavigation__list-item--active">
@@ -260,21 +266,21 @@
 
     
     
-<!--        <h2 class="chapter__headline text-black-50">book</h2>-->
+<!--        <h2 class="chapter__headline text-black-50">Tutorial</h2>-->
     
 
     <h1 id="installing-doctrine">Installing Doctrine</h1>
 <h2 id="composer-requirements">Composer Requirements</h2>
 <p>The first step is to add alongside your current packages the required entries for our Doctrine installation.
 We would add the following to our <code>composer.json</code> file located in our root folder:</p>
-<p><img alt="composer" src="../images/composer.png" class="img-responsive"/></p>
+<p><img alt="composer.json" src="../images/composer.png" class="img-responsive"/></p>
 <pre class="highlight"><code class="language-text">"dotkernel/dot-cache": "^4.0",
 "ramsey/uuid": "^4.5.0",
 "ramsey/uuid-doctrine": "^2.1.0",
 "roave/psr-container-doctrine": "^5.2.2 || ^6.0.0",</code></pre>
 <p><code>dotkernel/dot-cache</code></p>
-<p>Provides caching support for DotKernel applications.
-It offers a PSR-6 and PSR-16 compatible caching system that integrates smoothly with DotKernel's service container.</p>
+<p>Provides caching support for Dotkernel applications.
+It offers a PSR-6 and PSR-16 compatible caching system that integrates smoothly with Dotkernel's service container.</p>
 <p><code>ramsey/uuid</code></p>
 <p>A widely used PHP library for generating and working with UUIDs (Universally Unique Identifiers).
 It supports multiple UUID versions.</p>
@@ -283,12 +289,12 @@ It supports multiple UUID versions.</p>
 It allows Doctrine to store and retrieve UUIDs as proper value objects instead of plain strings, improving type safety.</p>
 <p><code>roave/psr-container-doctrine</code></p>
 <p>Provides a set of factory classes that integrate Doctrine ORM with any PSR-11 container.
-It simplifies wiring Doctrine EntityManager, DBAL, configuration, and related services in frameworks like DotKernel.</p>
+It simplifies wiring Doctrine EntityManager, DBAL, configuration, and related services in frameworks like Dotkernel.</p>
 <p><code>phpstan/phpstan-doctrine (dev requirement)</code></p>
 <p>An extension for PHPStan that improves static analysis for Doctrine.
 It understands entity metadata, repositories, and common Doctrine patterns, helping catch errors during development.</p>
 <h2 id="setting-up-doctrine">Setting Up Doctrine</h2>
-<p>After successfully installing our dependencies we now need to configure our Doctrine instance.</p>
+<p>After successfully installing our dependencies, we now need to configure our Doctrine instance.</p>
 <h3 id="declare-your-database">Declare your database</h3>
 <p>In the file <code>config/autoload/local.php</code> the structure would be updated like this:</p>
 <p><img alt="local.php" src="../images/local.png" class="img-responsive"/></p>
@@ -317,12 +323,12 @@ return [
     ],
     // the rest of your configuration
 ];</code></pre>
-<h3 id="declare-the-doctrine-drivers-and-migrations-location">Declare the Doctrine Drivers and Migrations Location</h3>
+<h3 id="declare-the-doctrine-drivers">Declare the Doctrine Drivers</h3>
 <p>With the very nice utility of the package <code>laminas/laminas-config-aggregator</code> we can declare our doctrine settings in the <code>src/App/src/ConfigProvider.php</code> file.
 This package takes all the provided configs from the <code>config/config.php</code> file and merges them into one.</p>
 <p>Our new <code>src/App/src/ConfigProvider.php</code> class would look like this now:</p>
-<p><img alt="Config provider factories update" src="../images/config-provider-1.png" />
-<img alt="Doctrine config function" src="../images/config-provider-2.png" /></p>
+<p><img alt="config-provider-1" src="../images/config-provider-1.png" class="img-responsive"/></p>
+<p><img alt="config-provider-2" src="../images/config-provider-2.png" class="img-responsive"/></p>
 <pre class="highlight"><code class="language-php">public function __invoke(): array
 {
     return [
@@ -366,12 +372,12 @@ private function getDoctrineConfig(): array
         ],
         'configuration' =&gt; [
             'orm_default' =&gt; [
-                'result_cache'             =&gt; 'filesystem',
-                'metadata_cache'           =&gt; 'filesystem',
-                'query_cache'              =&gt; 'filesystem',
-                'hydration_cache'          =&gt; 'array',
-                'typed_field_mapper'       =&gt; null,
-                'second_level_cache'       =&gt; [
+                'result_cache'       =&gt; 'filesystem',
+                'metadata_cache'     =&gt; 'filesystem',
+                'query_cache'        =&gt; 'filesystem',
+                'hydration_cache'    =&gt; 'array',
+                'typed_field_mapper' =&gt; null,
+                'second_level_cache' =&gt; [
                     'enabled'                    =&gt; true,
                     'default_lifetime'           =&gt; 3600,
                     'default_lock_lifetime'      =&gt; 60,
@@ -387,44 +393,15 @@ private function getDoctrineConfig(): array
                 'class' =&gt; MappingDriverChain::class,
             ],
         ],
-        'migrations'    =&gt; [
-            // Modify this line based on where you would like to have you migrations
-            'migrations_paths'        =&gt; [
-                'Migrations' =&gt; 'src/Migrations',
-            ],
-            'all_or_nothing'          =&gt; true,
-            'check_database_platform' =&gt; true,
-        ],
         'types'         =&gt; [
             UuidType::NAME =&gt; UuidType::class,
         ],
     ];
 }</code></pre>
-<p>We also require a new file <code>config/cli-config.php</code>.
-It initializes and returns a <code>DependencyFactory</code> that Doctrine Migrations uses to run migrations.</p>
-<p><img alt="cli-config" src="../images/cli-config.png" class="img-responsive"/></p>
-<pre class="highlight"><code class="language-php">&lt;?php
-
-declare(strict_types=1);
-
-use Doctrine\Migrations\Configuration\EntityManager\ExistingEntityManager;
-use Doctrine\Migrations\Configuration\Migration\ConfigurationArray;
-use Doctrine\Migrations\DependencyFactory;
-use Doctrine\ORM\EntityManager;
-
-$container = require 'config/container.php';
-
-$entityManager = $container-&gt;get(EntityManager::class);
-$entityManager-&gt;getEventManager();
-
-return DependencyFactory::fromEntityManager(
-    new ConfigurationArray($container-&gt;get('config')['doctrine']['migrations']),
-    new ExistingEntityManager($entityManager)
-);</code></pre>
 <h2 id="running-doctrine">Running doctrine</h2>
 <p>Now that everything has been configured we only need to do one last thing, to create an executable for the Doctrine CLI.
 In our case we will create a <code>doctrine</code> file inside the application's <code>bin</code> directory:</p>
-<p><img alt="bin/doctrine" src="../images/doctrine.png" class="img-responsive"/></p>
+<p><img alt="doctrine" src="../images/doctrine.png" class="img-responsive"/></p>
 <pre class="highlight"><code class="language-php">#!/usr/bin/env php
 &lt;?php
 
@@ -442,17 +419,6 @@ $entityManager = $container-&gt;get(EntityManager::class);
 $entityManager-&gt;getEventManager();
 
 ConsoleRunner::run(new SingleManagerProvider($entityManager));</code></pre>
-<p>(Optional) To keep things tidy, we recommend making an executable for the migrations of Doctrine as well.
-For this, we create <code>doctrine-migrations</code> file inside the application's <code>bin</code> directory:</p>
-<p><img alt="bin/doctrine-migrations" src="../images/doctrine-migrations.png" class="img-responsive"/></p>
-<pre class="highlight"><code class="language-php">#!/usr/bin/env php
-&lt;?php
-
-declare(strict_types=1);
-
-namespace Doctrine\Migrations;
-
-require __DIR__ . '/../vendor/doctrine/migrations/bin/doctrine-migrations.php';</code></pre>
 <p>Now by running the command bellow we should see the Doctrine CLI version alongside its available commands:</p>
 <pre class="highlight"><code class="language-shell">php ./bin/doctrine</code></pre>
 <p>Example (truncated) output:</p>
@@ -475,9 +441,9 @@ Options:
         
         <li class="col text-nowrap text-md-start">
             
-                <a rel="prev" class="page-nav__link page-nav__link--prev" href="../..">
+                <a rel="prev" class="page-nav__link page-nav__link--prev" href="../introduction/">
                     <i class="bi bi-chevron-left"></i>
-                    Home
+                    Introduction
                 </a>
             
         </li>

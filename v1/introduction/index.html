@@ -18,11 +18,11 @@
         <meta name="docsearch:component" content="Dotkernel 101">
 
         
-        <link rel="canonical" href="https://docs.dotkernel.org/tutorial-101/">
+        <link rel="canonical" href="https://docs.dotkernel.org/tutorial-101/v1/introduction/">
         
         <link rel="shortcut icon" href="https://docs.dotkernel.org/img/dk_docs_favicon_white.svg">
 
-        <title>Dotkernel 101 - Dotkernel Documentation</title>
+        <title>Introduction - Dotkernel 101 - Dotkernel Documentation</title>
 
         <link rel="stylesheet" href="https://docs.dotkernel.org/css/bootstrap.css">
         <link rel="stylesheet" href="https://docs.dotkernel.org/css/bootstrap-icons.min.css">
@@ -161,7 +161,18 @@
                 
 
                 
-                    <li class="breadcrumb-item">Dotkernel 101</li>
+                    <li class="breadcrumb-item"><a href="../..">Dotkernel 101</a></li>
+
+                    
+                        
+                            
+                            
+                                <li class="breadcrumb-item">Tutorial</li>
+                            
+                        
+                    
+
+                    <li class="breadcrumb-item active" aria-current="page">Introduction</li>
                 
             
         </ol>
@@ -176,7 +187,7 @@
                     
     <div class="subnavigation hidden-print">
 <!--        <h4 class="subnavigation__title">-->
-<!--            <a href=".">Dotkernel 101</a>-->
+<!--            <a href="../..">Dotkernel 101</a>-->
 <!--        </h4>-->
 
         <h5 class="subnavigation__title">Table of Contents</h5>
@@ -195,14 +206,14 @@
                                 <ul class="subnavigation__list">
                                     
                                         
-<li class="subnavigation__list-item ">
-    <a href="v1/introduction/" class="subnavigation__link">Introduction</a>
+<li class="subnavigation__list-item subnavigation__list-item--active">
+    <a href="./" class="subnavigation__link">Introduction</a>
 </li>
 
                                     
                                         
 <li class="subnavigation__list-item ">
-    <a href="v1/chapter-1/" class="subnavigation__link">Chapter 1</a>
+    <a href="../chapter-1/" class="subnavigation__link">Chapter 1</a>
 </li>
 
                                     
@@ -219,6 +230,13 @@
 
                     
                     
+                    
+    
+
+    
+    
+
+                    
                 </div>
                 <div class="col-lg-9 main_docs">
                     
@@ -226,23 +244,23 @@
 
 
 
+
     
-    <h1>Dotkernel 101</h1>
-    <p>Beginner tutorial for using Dotkernel</p>
-    <h2>Installation</h2>
-    <h3>Using Composer</h3>
-    <pre class="highlight line-numbers">
-        <i class="bi bi-copy copy_btn" onclick="copy(this)"></i>
-        <code class="language-bash">composer require dotkernel/tutorial-101</code>
-    </pre>
+    
+<!--        <h2 class="chapter__headline text-black-50">Tutorial</h2>-->
+    
 
-
-<h2>Support</h2>
+    <h1 id="introduction">Introduction</h1>
+<p>For the upcoming tutorial steps we assume that you already have installed the following:</p>
 <ul>
-    <li>Discussions: <a href="https://github.com/orgs/dotkernel/discussions" target="_blank">https://github.com/orgs/dotkernel/discussions</a></li>
-    <li>Issues: <a href="https://github.com/dotkernel/tutorial-101/issues" target="_blank">github.com/dotkernel/tutorial-101/issues</a></li>
-    <li>Source: <a href="https://github.com/dotkernel/tutorial-101" target="_blank">github.com/dotkernel/tutorial-101</a></li>
+<li>A UNIX-based development environment.
+If not, we recommend <a href="https://almalinux.org/">AlmaLinux</a> in a WSL2 container.
+You can check our <a href="https://docs.dotkernel.org/development/v2/setup/installation/">guide</a> for setting up your container.</li>
+<li>A recent IDE, for example, <a href="https://www.jetbrains.com/phpstorm/">PhpStorm</a> or <a href="https://code.visualstudio.com/">VSCode</a></li>
+<li>A fresh installation of <a href="https://github.com/dotkernel/light">Dotkernel Light</a></li>
+<li>Default UTF-8 encoding for files and LF type line separator</li>
 </ul>
+<p>Feel free to check out our <a href="https://docs.dotkernel.org/development/v2/setup/installation/">development documentation</a> in case of any further questions.</p>
 
 
 
@@ -252,13 +270,18 @@
         
         <li class="col text-nowrap text-md-start">
             
+                <a rel="prev" class="page-nav__link page-nav__link--prev" href="../..">
+                    <i class="bi bi-chevron-left"></i>
+                    Home
+                </a>
+            
         </li>
 
         
         <li class="col text-nowrap text-md-end pe-0">
             
-                <a rel="next" class="page-nav__link page-nav__link--next" href="v1/introduction/">
-                    Introduction
+                <a rel="next" class="page-nav__link page-nav__link--next" href="../chapter-1/">
+                    Chapter 1
                     <i class="bi bi-chevron-right"></i>
                 </a>
             
@@ -382,7 +405,7 @@
 </footer>
 
         <script>
-            let base_url = '.',
+            let base_url = '../..',
                 project  = "tutorial-101",
                 siteName = 'Dotkernel 101';
 
@@ -415,8 +438,3 @@
 </div>-->
     </body>
 </html>
-
-<!--
-MkDocs version : 1.6.1
-Build Date UTC : 2025-11-24 12:58:44.305784+00:00
--->
