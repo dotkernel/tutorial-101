@@ -41,7 +41,7 @@ It understands entity metadata, repositories, and common Doctrine patterns, help
 
 ## Setting Up Doctrine
 
-After successfully installing our dependencies we now need to configure our Doctrine instance.
+After successfully installing our dependencies, we now need to configure our Doctrine instance.
 
 ### Declare your database
 
@@ -86,7 +86,7 @@ Our new `src/App/src/ConfigProvider.php` class would look like this now:
 
 ![config-provider-1](images/config-provider-1.png)
 
-![config-provider-1](images/config-provider-2.png)
+![config-provider-2](images/config-provider-2.png)
 
 ```php
 public function __invoke(): array
