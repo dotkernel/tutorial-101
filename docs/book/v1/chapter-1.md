@@ -77,7 +77,7 @@ return [
 ];
 ```
 
-### Declare the Doctrine Drivers and Migrations Location
+### Declare the Doctrine Drivers
 
 With the very nice utility of the package `laminas/laminas-config-aggregator` we can declare our doctrine settings in the `src/App/src/ConfigProvider.php` file.
 This package takes all the provided configs from the `config/config.php` file and merges them into one.
@@ -132,12 +132,12 @@ private function getDoctrineConfig(): array
         ],
         'configuration' => [
             'orm_default' => [
-                'result_cache'             => 'filesystem',
-                'metadata_cache'           => 'filesystem',
-                'query_cache'              => 'filesystem',
-                'hydration_cache'          => 'array',
-                'typed_field_mapper'       => null,
-                'second_level_cache'       => [
+                'result_cache'       => 'filesystem',
+                'metadata_cache'     => 'filesystem',
+                'query_cache'        => 'filesystem',
+                'hydration_cache'    => 'array',
+                'typed_field_mapper' => null,
+                'second_level_cache' => [
                     'enabled'                    => true,
                     'default_lifetime'           => 3600,
                     'default_lock_lifetime'      => 60,
@@ -153,45 +153,11 @@ private function getDoctrineConfig(): array
                 'class' => MappingDriverChain::class,
             ],
         ],
-        'migrations'    => [
-            // Modify this line based on where you would like to have you migrations
-            'migrations_paths'        => [
-                'Migrations' => 'src/Migrations',
-            ],
-            'all_or_nothing'          => true,
-            'check_database_platform' => true,
-        ],
         'types'         => [
             UuidType::NAME => UuidType::class,
         ],
     ];
 }
-```
-
-We also require a new file `config/cli-config.php`.
-It initializes and returns a `DependencyFactory` that Doctrine Migrations uses to run migrations.
-
-![cli-config](images/cli-config.png)
-
-```php
-<?php
-
-declare(strict_types=1);
-
-use Doctrine\Migrations\Configuration\EntityManager\ExistingEntityManager;
-use Doctrine\Migrations\Configuration\Migration\ConfigurationArray;
-use Doctrine\Migrations\DependencyFactory;
-use Doctrine\ORM\EntityManager;
-
-$container = require 'config/container.php';
-
-$entityManager = $container->get(EntityManager::class);
-$entityManager->getEventManager();
-
-return DependencyFactory::fromEntityManager(
-    new ConfigurationArray($container->get('config')['doctrine']['migrations']),
-    new ExistingEntityManager($entityManager)
-);
 ```
 
 ## Running doctrine
@@ -219,22 +185,6 @@ $entityManager = $container->get(EntityManager::class);
 $entityManager->getEventManager();
 
 ConsoleRunner::run(new SingleManagerProvider($entityManager));
-```
-
-(Optional) To keep things tidy, we recommend making an executable for the migrations of Doctrine as well.
-For this, we create `doctrine-migrations` file inside the application's `bin` directory:
-
-![doctrine-migrations](images/doctrine-migrations.png)
-
-```php
-#!/usr/bin/env php
-<?php
-
-declare(strict_types=1);
-
-namespace Doctrine\Migrations;
-
-require __DIR__ . '/../vendor/doctrine/migrations/bin/doctrine-migrations.php';
 ```
 
 Now by running the command bellow we should see the Doctrine CLI version alongside its available commands:
