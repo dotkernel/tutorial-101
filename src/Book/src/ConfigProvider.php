@@ -9,7 +9,6 @@ use Doctrine\Persistence\Mapping\Driver\MappingDriver;
 
 /**
  * @phpstan-type ConfigType array{
- *      dependencies: DependenciesType,
  *      doctrine: DoctrineConfigType,
  * }
  * @phpstan-type DoctrineConfigType array{
@@ -24,9 +23,6 @@ use Doctrine\Persistence\Mapping\Driver\MappingDriver;
  *          },
  *      },
  * }
- * @phpstan-type DependenciesType array{
- *       factories: array<class-string, class-string>,
- * }
  */
 class ConfigProvider
 {
@@ -36,19 +32,7 @@ class ConfigProvider
     public function __invoke(): array
     {
         return [
-            'dependencies' => $this->getDependencies(),
-            'doctrine'     => $this->getDoctrineConfig(),
-        ];
-    }
-
-    /**
-     * @return DependenciesType
-     */
-    private function getDependencies(): array
-    {
-        return [
-            'delegators' => [],
-            'factories'  => [],
+            'doctrine' => $this->getDoctrineConfig(),
         ];
     }
 

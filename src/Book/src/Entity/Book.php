@@ -6,17 +6,13 @@ namespace Light\Book\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Light\App\Entity\AbstractEntity;
-use Light\App\Entity\TimestampsTrait;
-use Light\App\Entity\UuidIdentifierTrait;
+use Light\Book\Repository\BookRepository;
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: BookRepository::class)]
 #[ORM\Table(name: 'books')]
 #[ORM\HasLifecycleCallbacks]
 class Book extends AbstractEntity
 {
-    use TimestampsTrait;
-    use UuidIdentifierTrait;
-
     #[ORM\Column(name: 'title', type: 'string', length: 500, nullable: true)]
     private ?string $title = null;
 
@@ -26,8 +22,6 @@ class Book extends AbstractEntity
     public function __construct()
     {
         parent::__construct();
-
-        $this->created();
     }
 
     public function getTitle(): ?string

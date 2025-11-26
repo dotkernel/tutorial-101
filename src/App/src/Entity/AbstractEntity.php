@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Light\App\Entity;
 
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Laminas\Stdlib\ArraySerializableInterface;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 use function is_array;
 use function method_exists;
@@ -14,21 +17,67 @@ use function ucfirst;
 #[ORM\MappedSuperclass]
 abstract class AbstractEntity implements ArraySerializableInterface
 {
+    #[ORM\Column(name: 'created', type: 'datetime_immutable', nullable: false)]
+    protected DateTimeImmutable $created;
+
+    #[ORM\Column(name: 'updated', type: 'datetime_immutable', nullable: true)]
+    protected ?DateTimeImmutable $updated = null;
+
+    #[ORM\Id]
+    #[ORM\Column(name: 'id', type: 'uuid', unique: true, nullable: false)]
+    protected UuidInterface $uuid;
+
+    #[ORM\PrePersist]
+    public function created(): void
+    {
+        $this->created = new DateTimeImmutable();
+    }
+
+    #[ORM\PreUpdate]
+    public function touch(): void
+    {
+        $this->updated = new DateTimeImmutable();
+    }
+
     public function __construct()
     {
-        $this->initId();
+        $this->uuid = Uuid::uuid7();
     }
 
-    protected function initId(): void
+    public function getId(): UuidInterface
     {
+        return $this->uuid;
     }
 
-    /**
-     * Override this method in soft-deletable entities
-     */
-    public function isDeleted(): bool
+    public function setId(UuidInterface $id): static
     {
-        return false;
+        $this->uuid = $id;
+
+        return $this;
+    }
+
+    public function getCreated(): ?DateTimeImmutable
+    {
+        return $this->created;
+    }
+
+    public function getCreatedFormatted(string $dateFormat = 'Y-m-d H:i:s'): string
+    {
+        return $this->created->format($dateFormat);
+    }
+
+    public function getUpdated(): ?DateTimeImmutable
+    {
+        return $this->updated;
+    }
+
+    public function getUpdatedFormatted(string $dateFormat = 'Y-m-d H:i:s'): ?string
+    {
+        if ($this->updated instanceof DateTimeImmutable) {
+            return $this->updated->format($dateFormat);
+        }
+
+        return null;
     }
 
     /**
