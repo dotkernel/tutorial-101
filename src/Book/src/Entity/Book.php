@@ -19,11 +19,6 @@ class Book extends AbstractEntity
     #[ORM\Column(name: 'author', type: 'string', length: 500, nullable: true)]
     private ?string $author = null;
 
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     public function getTitle(): ?string
     {
         return $this->title;
@@ -46,8 +41,8 @@ class Book extends AbstractEntity
 
     /**
      * @return array{
-     *     title:string|null,
-     *     author:string|null
+     *     title: string|null,
+     *     author: string|null
      * }
      */
     public function getArrayCopy(): array

@@ -10,9 +10,9 @@ use Doctrine\Persistence\Mapping\Driver\MappingDriver;
 use Doctrine\Persistence\Mapping\Driver\MappingDriverChain;
 use Dot\Cache\Adapter\ArrayAdapter;
 use Dot\Cache\Adapter\FilesystemAdapter;
+use Light\App\DBAL\Types\UuidType;
 use Light\App\Factory\GetIndexViewHandlerFactory;
 use Light\App\Handler\GetIndexViewHandler;
-use Light\App\Types\UuidType;
 use Mezzio\Application;
 use Roave\PsrContainerDoctrine\EntityManagerFactory;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
@@ -175,7 +175,7 @@ class ConfigProvider
                 ],
                 // Modify this line based on where you would like to have you migrations
                 'migrations_paths'        => [
-                    'Migrations' => 'src/Migrations',
+                    'Migrations' => 'src/App/src/Migration',
                 ],
                 'all_or_nothing'          => true,
                 'check_database_platform' => true,

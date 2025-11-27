@@ -17,41 +17,29 @@ use function ucfirst;
 #[ORM\MappedSuperclass]
 abstract class AbstractEntity implements ArraySerializableInterface
 {
+    #[ORM\Id]
+    #[ORM\Column(name: 'id', type: 'uuid', unique: true, nullable: false)]
+    protected UuidInterface $id;
+
     #[ORM\Column(name: 'created', type: 'datetime_immutable', nullable: false)]
     protected DateTimeImmutable $created;
 
     #[ORM\Column(name: 'updated', type: 'datetime_immutable', nullable: true)]
     protected ?DateTimeImmutable $updated = null;
 
-    #[ORM\Id]
-    #[ORM\Column(name: 'id', type: 'uuid', unique: true, nullable: false)]
-    protected UuidInterface $uuid;
-
-    #[ORM\PrePersist]
-    public function created(): void
-    {
-        $this->created = new DateTimeImmutable();
-    }
-
-    #[ORM\PreUpdate]
-    public function touch(): void
-    {
-        $this->updated = new DateTimeImmutable();
-    }
-
     public function __construct()
     {
-        $this->uuid = Uuid::uuid7();
+        $this->id = Uuid::uuid7();
     }
 
     public function getId(): UuidInterface
     {
-        return $this->uuid;
+        return $this->id;
     }
 
     public function setId(UuidInterface $id): static
     {
-        $this->uuid = $id;
+        $this->id = $id;
 
         return $this;
     }
@@ -78,6 +66,18 @@ abstract class AbstractEntity implements ArraySerializableInterface
         }
 
         return null;
+    }
+
+    #[ORM\PrePersist]
+    public function created(): void
+    {
+        $this->created = new DateTimeImmutable();
+    }
+
+    #[ORM\PreUpdate]
+    public function touch(): void
+    {
+        $this->updated = new DateTimeImmutable();
     }
 
     /**

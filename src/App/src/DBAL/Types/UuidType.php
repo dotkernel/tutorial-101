@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Light\App\Types;
+namespace Light\App\DBAL\Types;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 

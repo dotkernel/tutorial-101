@@ -19,7 +19,5 @@
     <file>test</file>
 
     <!-- Include all rules from the Laminas Coding Standard -->
-    <rule ref="LaminasCodingStandard" >
-        <exclude-pattern>src/Migrations/*</exclude-pattern>
-    </rule>
+    <rule ref="LaminasCodingStandard" />
 </ruleset>
