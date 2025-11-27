@@ -7,7 +7,6 @@ namespace Light\Book\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Light\App\Entity\AbstractEntity;
 use Light\Book\Repository\BookRepository;
-use Ramsey\Uuid\UuidInterface;
 
 #[ORM\Entity(repositoryClass: BookRepository::class)]
 #[ORM\Table(name: 'books')]
@@ -42,7 +41,7 @@ class Book extends AbstractEntity
 
     /**
      * @return array{
-     *     id: UuidInterface,
+     *     id: non-empty-string,
      *     title: string,
      *     author: string
      * }
@@ -50,7 +49,7 @@ class Book extends AbstractEntity
     public function getArrayCopy(): array
     {
         return [
-            'id'     => $this->id,
+            'id'     => $this->id->toString(),
             'title'  => $this->title,
             'author' => $this->author,
         ];
