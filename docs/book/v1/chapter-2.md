@@ -44,8 +44,6 @@ Along with those we also need to create the file `config/cli-config.php`.
 This `cli-config.php` file sets up Doctrine so that you can run **migration commands** from the command line (CLI).
 It connects the Doctrine Migrations system with your application's existing `EntityManager`.
 
-![cli-config](images/chapter-2/cli-config.png)
-
 ```php
 <?php
 
@@ -73,8 +71,6 @@ In our latest releases we have decided to switch from a `binary UUID to a string
 Because of that, we are also implementing our own custom UUID type in the folder `src/App/src/DBAL/Types/UuidType.php`.
 With this method we can also add our own custom types in the future.
 
-![uuid-type](images/chapter-2/uuid-type.png)
-
 ```php
 <?php
 
@@ -97,10 +93,8 @@ class UuidType extends \Ramsey\Uuid\Doctrine\UuidType
 
 ## Testing Our Doctrine Migrations Configuration
 
-For easier usage of this functionality we will create a file `bin/doctrine-migrations`.
-This will give us an easier way of calling the `migrations` functionality.
-
-![doctrine-migrations](images/chapter-2/doctrine-migrations.png)
+For easier usage of this functionality, we will create a file `bin/doctrine-migrations`.
+This will give us an easier way of executing `migrations` operations.
 
 ```php
 #!/usr/bin/env php
@@ -139,14 +133,10 @@ The call should lead to a call that contains the following output:
 
 ## Creating our Entities
 
-Now that we have set up the Doctrine Migrations we shall now start working on our entities.
+Now that we have set up the Doctrine Migrations, we shall now start working on our entities.
 
-We need to create a base for our entities so that they can have the same starting point.
+We need to create a base for our entities so that they have the same starting point.
 For that, we will add a new directory `src/App/src/Entiy` in which we will add an abstract class, `AbstractEntity.php`:
-
-![abstract-entity-1](images/chapter-2/abstract-entity-1.png)
-![abstract-entity-2](images/chapter-2/abstract-entity-2.png)
-![abstract-entity-3](images/chapter-2/abstract-entity-3.png)
 
 ```php
 <?php
@@ -263,9 +253,6 @@ It is time to finally time to work on our `Book` Entity.
 We now create a new module with the location `src/Book/src`.
 In this module we create a directory called `Entity` in which we shall create our `Book.php` class.
 
-![book-1](images/chapter-2/book-1.png)
-![book-2](images/chapter-2/book-2.png)
-
 ```php
 <?php
 
@@ -326,13 +313,13 @@ class Book extends AbstractEntity
 }
 ```
 
-In the book class you can see various Doctrine tags such as `#[ORM\Table(name: 'books')]` which specifies the name of the table that will be related to this Entity.
-There are plenty of tags that can be added, but for the sake of simplicity we shall just stick to the table and the columns that will populate it.
+In the book class you can see various Doctrine tags such as `#[ORM\Table(name: 'books')]` which specify the name of the table that will be related to this Entity.
+There are many tags that can be added, but for the sake of simplicity, we will stick to the table and the columns that will populate it.
 
 ## Repositories
 
-In the class that we have created previously you might have noticed that our Entity is related to a Repository: `#[ORM\Entity(repositoryClass: BookRepository::class)]`.
-We have specified which Repository will handle queries for this Entity.
+In the class we created earlier, you may have noticed that our Entity is linked to a Repository using the following annotation: `#[ORM\Entity(repositoryClass: BookRepository::class)]`.
+This specifies which Repository will handle queries for this Entity.
 This allows us to write custom database logic for it.
 
 Same as for the Entities, we need to create a base and our future Repositories.
@@ -341,8 +328,6 @@ Because of that, we will create two new directories: `src/App/src/Repository` an
 Two repositories shall be created:
 
 - `src/App/src/Repository/AbstractRepository.php`
-
-![abstract-repo](images/chapter-2/abstract-repo.png)
 
 ```php
 <?php
@@ -381,8 +366,6 @@ class AbstractRepository extends EntityRepository
 
 - `src/App/src/Book/BookRepository.php`
 
-![book-repo](images/chapter-2/book-repo.png)
-
 ```php
 <?php
 
@@ -400,8 +383,8 @@ class BookRepository extends AbstractRepository
 }
 ```
 
-The `BookRepository.php` for example, can implement a function that list the books based on certain authors, or titles.
-That will not be covered in this tutorial.
+The `BookRepository.php`, for example, can implement functions that list books based on specific authors or titles.
+However, this will not be covered in this chapter of the tutorial.
 
 ## Final Steps
 
@@ -413,10 +396,8 @@ We have 3 final steps:
 
 ### Step 1
 
-In order to register our new module we need a new `ConfigProvider.php` in our `src/Book/src` folder.
+In order to register our new module, we need a new `ConfigProvider.php` in our `src/Book/src` folder.
 In this class we configure Doctrine to know from where to get our Entities.
-
-![book-config](images/chapter-2/book-config.png)
 
 ```php
 <?php
