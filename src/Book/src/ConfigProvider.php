@@ -6,6 +6,11 @@ namespace Light\Book;
 
 use Doctrine\ORM\Mapping\Driver\AttributeDriver;
 use Doctrine\Persistence\Mapping\Driver\MappingDriver;
+use Light\App\Factory\BookHandlerFactory;
+use Light\App\Factory\BookRepositoryFactory;
+use Light\Book\Handler\GetBooksHandler;
+use Light\Book\Repository\BookRepository;
+use Mezzio\Application;
 
 /**
  * @phpstan-type ConfigType array{
@@ -23,6 +28,10 @@ use Doctrine\Persistence\Mapping\Driver\MappingDriver;
  *          },
  *      },
  * }
+ * @phpstan-type DependenciesType array{
+ *       delegators: array<class-string, array<class-string>>,
+ *       factories: array<class-string, class-string>,
+ *  }
  */
 class ConfigProvider
 {
@@ -32,7 +41,26 @@ class ConfigProvider
     public function __invoke(): array
     {
         return [
-            'doctrine' => $this->getDoctrineConfig(),
+            'dependencies' => $this->getDependencies(),
+            'doctrine'     => $this->getDoctrineConfig(),
+        ];
+    }
+
+    /**
+     * @return DependenciesType
+     */
+    private function getDependencies(): array
+    {
+        return [
+            'delegators' => [
+                Application::class => [
+                    RoutesDelegator::class,
+                ],
+            ],
+            'factories'  => [
+                GetBooksHandler::class => BookHandlerFactory::class,
+                BookRepository::class  => BookRepositoryFactory::class,
+            ],
         ];
     }
 

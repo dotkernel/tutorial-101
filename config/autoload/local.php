@@ -41,6 +41,7 @@ return [
         'page' => [
             'about'      => 'about',
             'who-we-are' => 'who-we-are',
+            'books'      => 'books',
         ],
     ],
 ];

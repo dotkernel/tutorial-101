@@ -56,6 +56,7 @@ use function getcwd;
  *              class: class-string<MappingDriver>,
  *          },
  *      },
+ *     fixtures: non-empty-string,
  *      migrations: array{
  *          migrations_paths: array<non-empty-string, non-empty-string>,
  *          all_or_nothing: bool,
@@ -165,6 +166,7 @@ class ConfigProvider
                     'class' => MappingDriverChain::class,
                 ],
             ],
+            'fixtures'      => getcwd() . '/src/App/src/Fixture',
             'migrations'    => [
                 'table_storage' => [
                     'table_name'                 => 'doctrine_migration_versions',
