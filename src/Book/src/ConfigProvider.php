@@ -43,6 +43,7 @@ class ConfigProvider
         return [
             'dependencies' => $this->getDependencies(),
             'doctrine'     => $this->getDoctrineConfig(),
+            'templates'    => $this->getTemplates(),
         ];
     }
 
@@ -81,6 +82,20 @@ class ConfigProvider
                     'cache' => 'array',
                     'paths' => [__DIR__ . '/Entity'],
                 ],
+            ],
+        ];
+    }
+
+    /**
+    @return array{
+     *     paths: array{page: array{literal-string&non-falsy-string}}
+     * }
+     */
+    private function getTemplates(): array
+    {
+        return [
+            'paths' => [
+                'page' => [__DIR__ . '/../templates/page'],
             ],
         ];
     }
