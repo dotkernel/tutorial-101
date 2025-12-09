@@ -9,7 +9,8 @@ nav:
   - Home: index.md
   - Tutorial:
       - Introduction: v1/introduction.md
-      - Chapter 1: v1/chapter-1.md
+      - 1. Installing Doctrine: v1/chapter-1.md
+      - 2. Entities and Migrations: v1/chapter-2.md
 site_name: Dotkernel 101
 site_description: "Beginner tutorial for using Dotkernel"
 repo_url: "https://github.com/dotkernel/tutorial-101"

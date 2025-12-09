@@ -5,7 +5,7 @@
 The first step is to add alongside your current packages the required entries for our Doctrine installation.
 We would add the following to our `composer.json` file located in our root folder:
 
-![composer.json](images/composer.png)
+![composer.json](images/chapter-1/composer.png)
 
 ```text
 "dotkernel/dot-cache": "^4.0",
@@ -47,7 +47,7 @@ After successfully installing our dependencies, we now need to configure our Doc
 
 In the file `config/autoload/local.php` the structure would be updated like this:
 
-![local.php](images/local.png)
+![local.php](images/chapter-1/local.png)
 
 ```php
 $databases = [
@@ -84,9 +84,9 @@ This package takes all the provided configs from the `config/config.php` file an
 
 Our new `src/App/src/ConfigProvider.php` class would look like this now:
 
-![config-provider-1](images/config-provider-1.png)
+![config-provider-1](images/chapter-1/config-provider-1.png)
 
-![config-provider-2](images/config-provider-2.png)
+![config-provider-2](images/chapter-1/config-provider-2.png)
 
 ```php
 public function __invoke(): array
@@ -165,7 +165,7 @@ private function getDoctrineConfig(): array
 Now that everything has been configured we only need to do one last thing, to create an executable for the Doctrine CLI.
 In our case we will create a `doctrine` file inside the application's `bin` directory:
 
-![doctrine](images/doctrine.png)
+![doctrine](images/chapter-1/doctrine.png)
 
 ```php
 #!/usr/bin/env php
