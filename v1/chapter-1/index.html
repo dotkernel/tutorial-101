@@ -22,7 +22,7 @@
         
         <link rel="shortcut icon" href="https://docs.dotkernel.org/img/dk_docs_favicon_white.svg">
 
-        <title>Chapter 1 - Dotkernel 101 - Dotkernel Documentation</title>
+        <title>1. Installing Doctrine - Dotkernel 101 - Dotkernel Documentation</title>
 
         <link rel="stylesheet" href="https://docs.dotkernel.org/css/bootstrap.css">
         <link rel="stylesheet" href="https://docs.dotkernel.org/css/bootstrap-icons.min.css">
@@ -172,7 +172,7 @@
                         
                     
 
-                    <li class="breadcrumb-item active" aria-current="page">Chapter 1</li>
+                    <li class="breadcrumb-item active" aria-current="page">1. Installing Doctrine</li>
                 
             
         </ol>
@@ -213,7 +213,13 @@
                                     
                                         
 <li class="subnavigation__list-item subnavigation__list-item--active">
-    <a href="./" class="subnavigation__link">Chapter 1</a>
+    <a href="./" class="subnavigation__link">1. Installing Doctrine</a>
+</li>
+
+                                    
+                                        
+<li class="subnavigation__list-item ">
+    <a href="../chapter-2/" class="subnavigation__link">2. Entities and Migrations</a>
 </li>
 
                                     
@@ -273,7 +279,7 @@
 <h2 id="composer-requirements">Composer Requirements</h2>
 <p>The first step is to add alongside your current packages the required entries for our Doctrine installation.
 We would add the following to our <code>composer.json</code> file located in our root folder:</p>
-<p><img alt="composer.json" src="../images/composer.png" class="img-responsive"/></p>
+<p><img alt="composer.json" src="../images/chapter-1/composer.png" class="img-responsive"/></p>
 <pre class="highlight"><code class="language-text">"dotkernel/dot-cache": "^4.0",
 "ramsey/uuid": "^4.5.0",
 "ramsey/uuid-doctrine": "^2.1.0",
@@ -297,7 +303,7 @@ It understands entity metadata, repositories, and common Doctrine patterns, help
 <p>After successfully installing our dependencies, we now need to configure our Doctrine instance.</p>
 <h3 id="declare-your-database">Declare your database</h3>
 <p>In the file <code>config/autoload/local.php</code> the structure would be updated like this:</p>
-<p><img alt="local.php" src="../images/local.png" class="img-responsive"/></p>
+<p><img alt="local.php" src="../images/chapter-1/local.png" class="img-responsive"/></p>
 <pre class="highlight"><code class="language-php">$databases = [
     'default' =&gt; [
         'host'     =&gt; 'localhost',
@@ -327,8 +333,8 @@ return [
 <p>With the very nice utility of the package <code>laminas/laminas-config-aggregator</code> we can declare our doctrine settings in the <code>src/App/src/ConfigProvider.php</code> file.
 This package takes all the provided configs from the <code>config/config.php</code> file and merges them into one.</p>
 <p>Our new <code>src/App/src/ConfigProvider.php</code> class would look like this now:</p>
-<p><img alt="config-provider-1" src="../images/config-provider-1.png" class="img-responsive"/></p>
-<p><img alt="config-provider-2" src="../images/config-provider-2.png" class="img-responsive"/></p>
+<p><img alt="config-provider-1" src="../images/chapter-1/config-provider-1.png" class="img-responsive"/></p>
+<p><img alt="config-provider-2" src="../images/chapter-1/config-provider-2.png" class="img-responsive"/></p>
 <pre class="highlight"><code class="language-php">public function __invoke(): array
 {
     return [
@@ -401,7 +407,7 @@ private function getDoctrineConfig(): array
 <h2 id="running-doctrine">Running doctrine</h2>
 <p>Now that everything has been configured we only need to do one last thing, to create an executable for the Doctrine CLI.
 In our case we will create a <code>doctrine</code> file inside the application's <code>bin</code> directory:</p>
-<p><img alt="doctrine" src="../images/doctrine.png" class="img-responsive"/></p>
+<p><img alt="doctrine" src="../images/chapter-1/doctrine.png" class="img-responsive"/></p>
 <pre class="highlight"><code class="language-php">#!/usr/bin/env php
 &lt;?php
 
@@ -450,6 +456,11 @@ Options:
 
         
         <li class="col text-nowrap text-md-end pe-0">
+            
+                <a rel="next" class="page-nav__link page-nav__link--next" href="../chapter-2/">
+                    2. Entities and Migrations
+                    <i class="bi bi-chevron-right"></i>
+                </a>
             
         </li>
     </ul>

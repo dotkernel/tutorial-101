@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <meta name="description" content="Beginner tutorial for using Dotkernel">
+        
+        
+
+        
+        
+            
+        
+        <meta name="docsearch:version" content="1.0.0,latest">
+        <meta name="docsearch:language" content="en">
+        <meta name="docsearch:component" content="Dotkernel 101">
+
+        
+        <link rel="canonical" href="https://docs.dotkernel.org/tutorial-101/v1/chapter-2/">
+        
+        <link rel="shortcut icon" href="https://docs.dotkernel.org/img/dk_docs_favicon_white.svg">
+
+        <title>2. Entities and Migrations - Dotkernel 101 - Dotkernel Documentation</title>
+
+        <link rel="stylesheet" href="https://docs.dotkernel.org/css/bootstrap.css">
+        <link rel="stylesheet" href="https://docs.dotkernel.org/css/bootstrap-icons.min.css">
+        <link rel="stylesheet" href="https://docs.dotkernel.org/css/docs.css">
+        <script src="https://docs.dotkernel.org/js/bootstrap.js" defer></script>
+        <script src="https://docs.dotkernel.org/js/docs.js" defer></script>
+        <script src="https://docs.dotkernel.org/js/scripts.js" defer></script>
+    </head>
+    <body data-bs-spy="scroll" data-bs-target=".toc" data-bs-offset="100">
+
+        
+        <nav class="navbar navbar-expand-lg bg-body-tertiary bg-light dk-nav py-3" data-bs-theme="light">
+    <div class="container justify-content-between">
+        <div class="dk-nav-icon d-flex align-items-center">
+            <a class="navbar-brand" href="https://docs.dotkernel.org/">
+                <img alt="Dotkernel Logo" class="d-inline-block align-text-top" height="50"
+                     src="https://docs.dotkernel.org//img/dk_logomark_white.svg" width="45"/>
+            </a>
+
+            <div class="dk-nav-icon-items">
+                <span style="font-size: 12px; line-height: 13px">Dotkernel Documentation</span>
+
+                <div class="dropdown" data-bs-theme="light">
+                    <span class="fw-bold dropdown-toggle dk-pkg-name" data-bs-toggle="dropdown" aria-expanded="false">Tutorial-101</span>
+                    <ul class="dropdown-menu">
+                        
+                        <li class="dropdown-item ">
+                            <a href="https://docs.dotkernel.org/api-documentation/" class="nav-link d-flex gap-4 align-items-center">
+                                <i class="bi bi-arrow-return-right text-primary"></i>
+                                <div class="py-1">
+                                    <span class="fw-bold d-block">API</span>
+                                </div>
+                            </a>
+                        </li>
+                        
+                        <li class="dropdown-item ">
+                            <a href="https://docs.dotkernel.org/admin-documentation/" class="nav-link d-flex gap-4 align-items-center">
+                                <i class="bi bi-arrow-return-right text-primary"></i>
+                                <div class="py-1">
+                                    <span class="fw-bold d-block">Admin</span>
+                                </div>
+                            </a>
+                        </li>
+                        
+                        <li class="dropdown-item ">
+                            <a href="https://docs.dotkernel.org/frontend-documentation/" class="nav-link d-flex gap-4 align-items-center">
+                                <i class="bi bi-arrow-return-right text-primary"></i>
+                                <div class="py-1">
+                                    <span class="fw-bold d-block">Frontend</span>
+                                </div>
+                            </a>
+                        </li>
+                        
+                        <li class="dropdown-item ">
+                            <a href="https://docs.dotkernel.org/light-documentation/" class="nav-link d-flex gap-4 align-items-center">
+                                <i class="bi bi-arrow-return-right text-primary"></i>
+                                <div class="py-1">
+                                    <span class="fw-bold d-block">Light</span>
+                                </div>
+                            </a>
+                        </li>
+                        
+                        <li class="dropdown-item ">
+                            <a href="https://docs.dotkernel.org/queue-documentation/" class="nav-link d-flex gap-4 align-items-center">
+                                <i class="bi bi-arrow-return-right text-primary"></i>
+                                <div class="py-1">
+                                    <span class="fw-bold d-block">Queue</span>
+                                </div>
+                            </a>
+                        </li>
+                        
+                        <li class="dropdown-item ">
+                            <a href="https://docs.dotkernel.org/packages/" class="nav-link d-flex gap-4 align-items-center">
+                                <i class="bi bi-arrow-return-right text-primary"></i>
+                                <div class="py-1">
+                                    <span class="fw-bold d-block">Packages</span>
+                                </div>
+                            </a>
+                        </li>
+                        
+                        <li class="dropdown-item ">
+                            <a href="https://docs.dotkernel.org/development/" class="nav-link d-flex gap-4 align-items-center">
+                                <i class="bi bi-arrow-return-right text-primary"></i>
+                                <div class="py-1">
+                                    <span class="fw-bold d-block">Development</span>
+                                </div>
+                            </a>
+                        </li>
+                        
+                        <li class="dropdown-item ">
+                            <a href="https://docs.dotkernel.org/headless-documentation/" class="nav-link d-flex gap-4 align-items-center">
+                                <i class="bi bi-arrow-return-right text-primary"></i>
+                                <div class="py-1">
+                                    <span class="fw-bold d-block">Headless Platform</span>
+                                </div>
+                            </a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+<!--                <li class="nav-item">-->
+<!--                    <a href="#" class="nav-link fw-bold text-white" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal" title="Open search">-->
+<!--                        <i class="bi bi-search"></i> Search-->
+<!--                    </a>-->
+<!--                </li>-->
+                <li class="nav-item">
+                    <a class="nav-link fw-bold text-white" href="https://github.com/dotkernel/tutorial-101" title="Go to Dotkernel 101 repository" target="_blank">
+                        <i class="bi bi-github"></i>
+                        GitHub
+                    </a>
+                </li>
+                <li class="nav-item">
+                    
+    
+
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+        
+        <div class="container">
+    <nav aria-label="breadcrumb" class="nav_breadcrumb">
+        <ol class="breadcrumb">
+            
+                <li class="breadcrumb-item"><a href="https://docs.dotkernel.org/">Overview</a></li>
+                
+
+                
+                    <li class="breadcrumb-item"><a href="../..">Dotkernel 101</a></li>
+
+                    
+                        
+                            
+                            
+                                <li class="breadcrumb-item">Tutorial</li>
+                            
+                        
+                    
+
+                    <li class="breadcrumb-item active" aria-current="page">2. Entities and Migrations</li>
+                
+            
+        </ol>
+    </nav>
+</div>
+
+        
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 right_sidebar">
+                    
+                    
+    <div class="subnavigation hidden-print">
+<!--        <h4 class="subnavigation__title">-->
+<!--            <a href="../..">Dotkernel 101</a>-->
+<!--        </h4>-->
+
+        <h5 class="subnavigation__title">Table of Contents</h5>
+
+        <ul class="subnavigation__list">
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item">
+                                <span class="subnavigation__headline">Tutorial</span>
+                                <ul class="subnavigation__list">
+                                    
+                                        
+<li class="subnavigation__list-item ">
+    <a href="../introduction/" class="subnavigation__link">Introduction</a>
+</li>
+
+                                    
+                                        
+<li class="subnavigation__list-item ">
+    <a href="../chapter-1/" class="subnavigation__link">1. Installing Doctrine</a>
+</li>
+
+                                    
+                                        
+<li class="subnavigation__list-item subnavigation__list-item--active">
+    <a href="./" class="subnavigation__link">2. Entities and Migrations</a>
+</li>
+
+                                    
+                                </ul>
+                            </li>
+                        
+                    
+                
+            
+        </ul>
+    </div>
+
+                    
+
+                    
+                    
+                    
+    
+
+    
+    
+        <div class="toc">
+            <h6 class="toc__headline">On this page</h6>
+            <ul class="toc__list">
+            
+                <li class="toc__entry">
+                    <a href="#what-are-entities" class="toc__link nav-link">What are Entities ?</a>
+                </li>
+            
+                <li class="toc__entry">
+                    <a href="#what-are-migrations" class="toc__link nav-link">What are Migrations ?</a>
+                </li>
+            
+                <li class="toc__entry">
+                    <a href="#setting-up-the-migrations-functionality" class="toc__link nav-link">Setting Up the Migrations Functionality</a>
+                </li>
+            
+                <li class="toc__entry">
+                    <a href="#used-uuid-type" class="toc__link nav-link">Used UUID type</a>
+                </li>
+            
+                <li class="toc__entry">
+                    <a href="#testing-our-doctrine-migrations-configuration" class="toc__link nav-link">Testing Our Doctrine Migrations Configuration</a>
+                </li>
+            
+                <li class="toc__entry">
+                    <a href="#creating-our-entities" class="toc__link nav-link">Creating our Entities</a>
+                </li>
+            
+                <li class="toc__entry">
+                    <a href="#repositories" class="toc__link nav-link">Repositories</a>
+                </li>
+            
+                <li class="toc__entry">
+                    <a href="#final-steps" class="toc__link nav-link">Final Steps</a>
+                </li>
+            
+            </ul>
+        </div>
+    
+
+                    
+                </div>
+                <div class="col-lg-9 main_docs">
+                    
+                    
+
+
+
+
+    
+    
+<!--        <h2 class="chapter__headline text-black-50">Tutorial</h2>-->
+    
+
+    <h1 id="entities-and-migrations">Entities and Migrations</h1>
+<p>In the previous tutorial we have shown you how to install the basic functionality of Doctrine.
+In this tutorial we are going to show you how to make changes to the database schema through <code>Entities</code> and <code>Migrations</code>.</p>
+<h2 id="what-are-entities">What are Entities ?</h2>
+<p>In Doctrine, entities are PHP classes that represent database tables.
+Each property in the class corresponds to a column in the table.
+Entities define the structure and behavior of your data.</p>
+<h2 id="what-are-migrations">What are Migrations ?</h2>
+<p>Doctrine migrations are version-controlled changes to the database schema.
+They allow you to safely update the structure of your database (create tables, add columns, etc.) over time — similar to Git for your database.</p>
+<h2 id="setting-up-the-migrations-functionality">Setting Up the Migrations Functionality</h2>
+<p>To enable Doctrine migrations, we configure the migrations section in the <code>getDoctrineConfig()</code> function from <code>src/App/ConfigProvider</code>.
+This defines <code>where migration files will be stored</code>, as well as <code>how the migration table is managed</code>.
+The configuration includes settings for the migrations table, execution tracking, and the path where new migration classes will be generated.</p>
+<p><img alt="config-migrations" src="../images/chapter-2/config-migrations.png" class="img-responsive"/></p>
+<pre class="highlight"><code class="language-php">'migrations'    =&gt; [
+    'table_storage' =&gt; [
+        'table_name'                 =&gt; 'doctrine_migration_versions',
+        'version_column_name'        =&gt; 'version',
+        'version_column_length'      =&gt; 191,
+        'executed_at_column_name'    =&gt; 'executed_at',
+        'execution_time_column_name' =&gt; 'execution_time',
+    ],
+    // Modify this line based on where you would like to have your migrations
+    'migrations_paths'        =&gt; [
+        'Migrations' =&gt; 'src/App/src/Migration',
+    ],
+    'all_or_nothing'          =&gt; true,
+    'check_database_platform' =&gt; true,
+],</code></pre>
+<p>Along with those we also need to create the file <code>config/cli-config.php</code>.
+This <code>cli-config.php</code> file sets up Doctrine so that you can run <strong>migration commands</strong> from the command line (CLI).
+It connects the Doctrine Migrations system with your application's existing <code>EntityManager</code>.</p>
+<pre class="highlight"><code class="language-php">&lt;?php
+
+declare(strict_types=1);
+
+use Doctrine\Migrations\Configuration\EntityManager\ExistingEntityManager;
+use Doctrine\Migrations\Configuration\Migration\ConfigurationArray;
+use Doctrine\Migrations\DependencyFactory;
+use Doctrine\ORM\EntityManager;
+
+$container = require 'config/container.php';
+
+$entityManager = $container-&gt;get(EntityManager::class);
+$entityManager-&gt;getEventManager();
+
+return DependencyFactory::fromEntityManager(
+    new ConfigurationArray($container-&gt;get('config')['doctrine']['migrations']),
+    new ExistingEntityManager($entityManager)
+);</code></pre>
+<h2 id="used-uuid-type">Used UUID type</h2>
+<p>In our latest releases we have decided to switch from a <code>binary UUID to a string UUID</code>.
+Because of that, we are also implementing our own custom UUID type in the folder <code>src/App/src/DBAL/Types/UuidType.php</code>.
+With this method we can also add our own custom types in the future.</p>
+<pre class="highlight"><code class="language-php">&lt;?php
+
+declare(strict_types=1);
+
+namespace Light\App\DBAL\Types;
+
+use Doctrine\DBAL\Platforms\AbstractPlatform;
+
+class UuidType extends \Ramsey\Uuid\Doctrine\UuidType
+{
+    public const NAME = 'uuid';
+
+    public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
+    {
+        return 'UUID';
+    }
+}</code></pre>
+<h2 id="testing-our-doctrine-migrations-configuration">Testing Our Doctrine Migrations Configuration</h2>
+<p>For easier usage of this functionality, we will create a file <code>bin/doctrine-migrations</code>.
+This will give us an easier way of executing <code>migrations</code> operations.</p>
+<pre class="highlight"><code class="language-php">#!/usr/bin/env php
+&lt;?php
+
+declare(strict_types=1);
+
+namespace Doctrine\Migrations;
+
+require __DIR__ . '/../vendor/doctrine/migrations/bin/doctrine-migrations.php';</code></pre>
+<p>We can now call:</p>
+<pre class="highlight"><code class="language-shell">php bin/doctrine-migrations</code></pre>
+<p>The call should lead to a call that contains the following output:</p>
+<pre class="highlight"><code class="language-terminaloutput">  migrations:current                [current] Outputs the current version
+  migrations:diff                   [diff] Generate a migration by comparing your current database to your mapping information.
+  migrations:dump-schema            [dump-schema] Dump the schema for your database to a migration.
+  migrations:execute                [execute] Execute one or more migration versions up or down manually.
+  migrations:generate               [generate] Generate a blank migration class.
+  migrations:latest                 [latest] Outputs the latest version
+  migrations:list                   [list-migrations] Display a list of all available migrations and their status.
+  migrations:migrate                [migrate] Execute a migration to a specified version or the latest available version.
+  migrations:rollup                 [rollup] Rollup migrations by deleting all tracked versions and insert the one version that exists.
+  migrations:status                 [status] View the status of a set of migrations.
+  migrations:sync-metadata-storage  [sync-metadata-storage] Ensures that the metadata storage is at the latest version.
+  migrations:up-to-date             [up-to-date] Tells you if your schema is up-to-date.
+  migrations:version                [version] Manually add and delete migration versions from the version table.</code></pre>
+<h2 id="creating-our-entities">Creating our Entities</h2>
+<p>Now that we have set up the Doctrine Migrations, we shall now start working on our entities.</p>
+<p>We need to create a base for our entities so that they have the same starting point.
+For that, we will add a new directory <code>src/App/src/Entiy</code> in which we will add an abstract class, <code>AbstractEntity.php</code>:</p>
+<pre class="highlight"><code class="language-php">&lt;?php
+
+declare(strict_types=1);
+
+namespace Light\App\Entity;
+
+use DateTimeImmutable;
+use Doctrine\ORM\Mapping as ORM;
+use Laminas\Stdlib\ArraySerializableInterface;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
+
+use function is_array;
+use function method_exists;
+use function ucfirst;
+
+#[ORM\MappedSuperclass]
+abstract class AbstractEntity implements ArraySerializableInterface
+{
+    #[ORM\Id]
+    #[ORM\Column(name: 'id', type: 'uuid', unique: true, nullable: false)]
+    protected UuidInterface $id;
+
+    #[ORM\Column(name: 'created', type: 'datetime_immutable', nullable: false)]
+    protected DateTimeImmutable $created;
+
+    #[ORM\Column(name: 'updated', type: 'datetime_immutable', nullable: true)]
+    protected ?DateTimeImmutable $updated = null;
+
+    public function __construct()
+    {
+        $this-&gt;id = Uuid::uuid7();
+    }
+
+    public function getId(): UuidInterface
+    {
+        return $this-&gt;id;
+    }
+
+    public function setId(UuidInterface $id): static
+    {
+        $this-&gt;id = $id;
+
+        return $this;
+    }
+
+    public function getCreated(): ?DateTimeImmutable
+    {
+        return $this-&gt;created;
+    }
+
+    public function getCreatedFormatted(string $dateFormat = 'Y-m-d H:i:s'): string
+    {
+        return $this-&gt;created-&gt;format($dateFormat);
+    }
+
+    public function getUpdated(): ?DateTimeImmutable
+    {
+        return $this-&gt;updated;
+    }
+
+    public function getUpdatedFormatted(string $dateFormat = 'Y-m-d H:i:s'): ?string
+    {
+        if ($this-&gt;updated instanceof DateTimeImmutable) {
+            return $this-&gt;updated-&gt;format($dateFormat);
+        }
+
+        return null;
+    }
+
+    #[ORM\PrePersist]
+    public function created(): void
+    {
+        $this-&gt;created = new DateTimeImmutable();
+    }
+
+    #[ORM\PreUpdate]
+    public function touch(): void
+    {
+        $this-&gt;updated = new DateTimeImmutable();
+    }
+
+    /**
+     * @param array&lt;non-empty-string, mixed&gt; $array
+     */
+    public function exchangeArray(array $array): void
+    {
+        foreach ($array as $property =&gt; $values) {
+            if (is_array($values)) {
+                $method = 'add' . ucfirst($property);
+                if (! method_exists($this, $method)) {
+                    continue;
+                }
+                foreach ($values as $value) {
+                    $this-&gt;$method($value);
+                }
+            } else {
+                $method = 'set' . ucfirst($property);
+                if (! method_exists($this, $method)) {
+                    continue;
+                }
+                $this-&gt;$method($values);
+            }
+        }
+    }
+}</code></pre>
+<p>We extend this class to <strong>any Entity</strong> that we create so that all can have an identifier(<code>id</code>), a field for knowing when it was <code>created</code> and one to mark a point in time for when we <code>update</code> it.</p>
+<p>It is time to finally time to work on our <code>Book</code> Entity.
+We now create a new module with the location <code>src/Book/src</code>.
+In this module we create a directory called <code>Entity</code> in which we shall create our <code>Book.php</code> class.</p>
+<pre class="highlight"><code class="language-php">&lt;?php
+
+declare(strict_types=1);
+
+namespace Light\Book\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Light\App\Entity\AbstractEntity;
+use Light\Book\Repository\BookRepository;
+
+#[ORM\Entity(repositoryClass: BookRepository::class)]
+#[ORM\Table(name: 'books')]
+#[ORM\HasLifecycleCallbacks]
+class Book extends AbstractEntity
+{
+    #[ORM\Column(name: 'title', type: 'string', length: 500)]
+    private string $title;
+
+    #[ORM\Column(name: 'author', type: 'string', length: 500)]
+    private string $author;
+
+    public function getTitle(): ?string
+    {
+        return $this-&gt;title;
+    }
+
+    public function setTitle(string $title): void
+    {
+        $this-&gt;title = $title;
+    }
+
+    public function getAuthor(): ?string
+    {
+        return $this-&gt;author;
+    }
+
+    public function setAuthor(string $author): void
+    {
+        $this-&gt;author = $author;
+    }
+
+    /**
+     * @return array{
+     *     id: non-empty-string,
+     *     title: string,
+     *     author: string
+     * }
+     */
+    public function getArrayCopy(): array
+    {
+        return [
+            'id'     =&gt; $this-&gt;id-&gt;toString(),
+            'title'  =&gt; $this-&gt;title,
+            'author' =&gt; $this-&gt;author,
+        ];
+    }
+}</code></pre>
+<p>In the book class you can see various Doctrine tags such as <code>#[ORM\Table(name: 'books')]</code> which specify the name of the table that will be related to this Entity.
+There are many tags that can be added, but for the sake of simplicity, we will stick to the table and the columns that will populate it.</p>
+<h2 id="repositories">Repositories</h2>
+<p>In the class we created earlier, you may have noticed that our Entity is linked to a Repository using the following annotation: <code>#[ORM\Entity(repositoryClass: BookRepository::class)]</code>.
+This specifies which Repository will handle queries for this Entity.
+This allows us to write custom database logic for it.</p>
+<p>Same as for the Entities, we need to create a base and our future Repositories.
+Because of that, we will create two new directories: <code>src/App/src/Repository</code> and <code>src/Book/src/Repository</code>.</p>
+<p>Two repositories shall be created:</p>
+<ul>
+<li><code>src/App/src/Repository/AbstractRepository.php</code></li>
+</ul>
+<pre class="highlight"><code class="language-php">&lt;?php
+
+declare(strict_types=1);
+
+namespace Light\App\Repository;
+
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
+use Light\App\Entity\EntityInterface;
+
+/**
+ * @extends EntityRepository&lt;object&gt;
+ */
+class AbstractRepository extends EntityRepository
+{
+    public function deleteResource(EntityInterface $resource): void
+    {
+        $this-&gt;getEntityManager()-&gt;remove($resource);
+        $this-&gt;getEntityManager()-&gt;flush();
+    }
+
+    public function getQueryBuilder(): QueryBuilder
+    {
+        return $this-&gt;getEntityManager()-&gt;createQueryBuilder();
+    }
+
+    public function saveResource(EntityInterface $resource): void
+    {
+        $this-&gt;getEntityManager()-&gt;persist($resource);
+        $this-&gt;getEntityManager()-&gt;flush();
+    }
+}</code></pre>
+<ul>
+<li><code>src/App/src/Book/BookRepository.php</code></li>
+</ul>
+<pre class="highlight"><code class="language-php">&lt;?php
+
+declare(strict_types=1);
+
+namespace Light\Book\Repository;
+
+use Light\App\Repository\AbstractRepository;
+
+class BookRepository extends AbstractRepository
+{
+    /**
+     * Any other custom methods can be added here
+     */
+}</code></pre>
+<p>The <code>BookRepository.php</code>, for example, can implement functions that list books based on specific authors or titles.
+However, this will not be covered in this chapter of the tutorial.</p>
+<h2 id="final-steps">Final Steps</h2>
+<p>We have 3 final steps:</p>
+<ul>
+<li>registering our <code>Book</code> module</li>
+<li>registering our new namespace in <code>composer.json</code></li>
+<li>running the migrations</li>
+</ul>
+<h3 id="step-1">Step 1</h3>
+<p>In order to register our new module, we need a new <code>ConfigProvider.php</code> in our <code>src/Book/src</code> folder.
+In this class we configure Doctrine to know from where to get our Entities.</p>
+<pre class="highlight"><code class="language-php">&lt;?php
+
+declare(strict_types=1);
+
+namespace Light\Book;
+
+use Doctrine\ORM\Mapping\Driver\AttributeDriver;
+use Doctrine\Persistence\Mapping\Driver\MappingDriver;
+
+class ConfigProvider
+{
+    public function __invoke(): array
+    {
+        return [
+            'doctrine' =&gt; $this-&gt;getDoctrineConfig(),
+        ];
+    }
+
+    private function getDoctrineConfig(): array
+    {
+        return [
+            'driver' =&gt; [
+                'orm_default'  =&gt; [
+                    'drivers' =&gt; [
+                        'Light\Book\Entity' =&gt; 'BookEntities',
+                    ],
+                ],
+                'BookEntities' =&gt; [
+                    'class' =&gt; AttributeDriver::class,
+                    'cache' =&gt; 'array',
+                    'paths' =&gt; [__DIR__ . '/Entity'],
+                ],
+            ],
+        ];
+    }
+}</code></pre>
+<p>This class should be added in <code>config/config.php</code>.</p>
+<p><img alt="config-config" src="../images/chapter-2/config-config.png" class="img-responsive"/></p>
+<pre class="highlight"><code class="language-php">\Light\Book\ConfigProvider::class,</code></pre>
+<h3 id="step-2">Step 2</h3>
+<p>Registering the namespace is fairly simple.
+We just add it in our <code>composer.json</code> file by adding <code>"Light\\Book\\": "src/Book/src/"</code> under the <code>autoload</code>.<code>psr-4</code> key:</p>
+<p><img alt="composer" src="../images/chapter-2/composer.png" />,</p>
+<pre class="highlight"><code class="language-text">"Light\\Book\\": "src/Book/src/"</code></pre>
+<p>We now have to run the following command to have it registered:</p>
+<pre class="highlight"><code class="language-shell">composer dump-autoload</code></pre>
+<p>The module is now registered.</p>
+<h3 id="step-3">Step 3</h3>
+<p>For the last step we will create a migration using our <code>bin/doctrine-migrations</code> file and then execute it:</p>
+<pre class="highlight"><code class="language-shell">php bin/doctrine-migrations.php migrations:diff</code></pre>
+<p>You should get an output similar to:</p>
+<pre class="highlight"><code class="language-terminaloutput">Generated new migration class to "src/App/src/Migration/Version20251127183637.php"</code></pre>
+<p>The <code>migrations:diff</code> flag tells Doctrine to compare our current database schema and create a file in which the differences will be transformed into SQL syntax.
+Inside this file you should have something similar to:</p>
+<pre class="highlight"><code class="language-php">final class Version20251127183637 extends AbstractMigration
+{
+    public function getDescription(): string
+    {
+        return '';
+    }
+
+    public function up(Schema $schema): void
+    {
+        // this up() migration is auto-generated, please modify it to your needs
+        $this-&gt;addSql('CREATE TABLE books (title VARCHAR(500) DEFAULT NULL, author VARCHAR(500) DEFAULT NULL, id UUID NOT NULL, created DATETIME NOT NULL, updated DATETIME DEFAULT NULL, PRIMARY KEY (id)) DEFAULT CHARACTER SET utf8mb4');
+    }
+
+    public function down(Schema $schema): void
+    {
+        // this down() migration is auto-generated, please modify it to your needs
+        $this-&gt;addSql('DROP TABLE books');
+    }
+}</code></pre>
+<p>We only have to execute the migrations now with the command:</p>
+<pre class="highlight"><code class="language-shell">php bin/doctrine-migrations.php migrations:migrate</code></pre>
+<p>The output should be similar to this:</p>
+<pre class="highlight"><code class="language-terminaloutput">[OK] Successfully migrated to version: Migrations\Version2025112718363</code></pre>
+
+
+
+
+    <nav>
+    <ul class="list-unstyled page-nav row w-100 mt-5 mb-3 pt-5 pb-3">
+        
+        <li class="col text-nowrap text-md-start">
+            
+                <a rel="prev" class="page-nav__link page-nav__link--prev" href="../chapter-1/">
+                    <i class="bi bi-chevron-left"></i>
+                    1. Installing Doctrine
+                </a>
+            
+        </li>
+
+        
+        <li class="col text-nowrap text-md-end pe-0">
+            
+        </li>
+    </ul>
+</nav>
+
+
+
+                    
+                </div>
+            </div>
+        </div>
+
+        
+        <footer class="footer">
+    <div class="container">
+        <hr class="mb-5" />
+
+        <div class="row">
+            <div class="col-md-9">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 dk_widget">
+                        <p class="ms-0">API</p>
+
+                        <a href="https://docs.dotkernel.org/api-documentation/">
+                            <i class="bi bi-arrow-return-right"></i>
+                            Dotkernel web starter project suitable for building RESTful APIs
+                        </a>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 dk_widget">
+                        <p class="ms-0">Admin</p>
+
+                        <a href="https://docs.dotkernel.org/admin-documentation/">
+                            <i class="bi bi-arrow-return-right"></i>
+                            Dotkernel web starter project suitable for admin applications
+                        </a>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 dk_widget">
+                        <p class="ms-0">Frontend</p>
+
+                        <a href="https://docs.dotkernel.org/frontend-documentation/">
+                            <i class="bi bi-arrow-return-right"></i>
+                            Dotkernel web starter project suitable for frontend applications
+                        </a>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 dk_widget">
+                        <p class="ms-0">Light</p>
+
+                        <a href="https://docs.dotkernel.org/light-documentation/">
+                            <i class="bi bi-arrow-return-right"></i>
+                            Dotkernel web starter project suitable for generating a simple website
+                        </a>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 dk_widget">
+                        <p class="ms-0">Dotkernel Packages</p>
+
+                        <a href="https://docs.dotkernel.org/packages/">
+                            <i class="bi bi-arrow-return-right"></i>
+                            Dotkernel packages offering a wide range of tools
+                        </a>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 dk_widget">
+                        <p class="ms-0">Development environment</p>
+
+                        <a href="https://docs.dotkernel.org/development/">
+                            <i class="bi bi-arrow-return-right"></i>
+                            Install PHP, Apache, MariaDB, Composer, PhpMyAdmin, Node.js and Git on WSL2
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3 pt-3 mt-1">
+                <ul class="support__list row">
+                    <li class="support__list-item col-lg-6 mb-md-3">
+                        <a href="https://github.com/dotkernel" class="support__link" title="GitHub" target="_blank">
+                            <i class="bi bi-github"></i> GitHub
+                        </a>
+                    </li>
+                    <li class="support__list-item col-lg-6 mb-md-3">
+                        <a href="https://dotkernel.slack.com" class="support__link" title="Chat" target="_blank">
+                            <i class="bi bi-slack"></i> Slack
+                        </a>
+                    </li>
+                    <li class="support__list-item col-lg-6 mb-md-3">
+                        <a href="https://twitter.com/dotkernel" class="support__link" title="X (Twitter)" target="_blank">
+                            <i class="bi bi-twitter-x"></i> Twitter
+                        </a>
+                    </li>
+                    <li class="support__list-item col-lg-6 mb-md-3">
+                        <a href="https://www.dotkernel.com/blog/" class="support__link" title="Blog" target="_blank">
+                            <i class="bi bi-file-post"></i> Blog
+                        </a>
+                    </li>
+                    <li class="support__list-item col-lg-6 mb-md-3">
+                        <a href="https://www.dotkernel.com/feed/" class="support__link" title="Blog feed" target="_blank">
+                            <i class="bi bi-rss-fill"></i> Feed
+                        </a>
+                    </li>
+                    <li class="support__list-item col-lg-6 mb-md-3">
+                        <a href="https://github.com/orgs/dotkernel/discussions" class="support__link" title="Blog feed" target="_blank">
+                            <i class="bi bi-chat-left-text"></i> Discussions
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <hr class="mt-5" />
+
+        <div class="footer_copy">
+            &#169; Copyright Dotkernel <span id="current-year"></span>. All rights reserved.
+        </div>
+    </div>
+</footer>
+
+        <script>
+            let base_url = '../..',
+                project  = "tutorial-101",
+                siteName = 'Dotkernel 101';
+
+                document.addEventListener("DOMContentLoaded", function() {
+                    document.querySelectorAll('.subnavigation__link').forEach(function(link) {
+                        if (link.getAttribute('href') === './') {
+                            link.parentNode.parentNode.classList.add('show');
+                        }
+                    });
+                });
+        </script>
+<!--        -->
+<!--        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Search</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form role="form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search in Dotkernel 101" id="mkdocs-search-query">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+        </div>
+    </div>
+</div>-->
+    </body>
+</html>
