@@ -71,6 +71,7 @@ class RoutesDelegator
     }
 }
 ```
+
 ## Handling the Request
 
 Now that the route is exists, we need to create the class that will handle our request.

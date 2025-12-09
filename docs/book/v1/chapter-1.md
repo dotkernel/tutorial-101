@@ -165,7 +165,6 @@ private function getDoctrineConfig(): array
 Now that everything has been configured we only need to do one last thing, to create an executable for the Doctrine CLI.
 In our case we will create a `doctrine` file inside the application's `bin` directory:
 
-
 ```php
 #!/usr/bin/env php
 <?php
