@@ -11,6 +11,7 @@ nav:
       - Introduction: v1/introduction.md
       - 1. Installing Doctrine: v1/chapter-1.md
       - 2. Entities and Migrations: v1/chapter-2.md
+      - 3. Fixtures and Custom Listing: v1/chapter-3.md
 site_name: Dotkernel 101
 site_description: "Beginner tutorial for using Dotkernel"
 repo_url: "https://github.com/dotkernel/tutorial-101"

@@ -136,7 +136,7 @@ The call should lead to a call that contains the following output:
 Now that we have set up the Doctrine Migrations, we shall now start working on our entities.
 
 We need to create a base for our entities so that they have the same starting point.
-For that, we will add a new directory `src/App/src/Entiy` in which we will add an abstract class, `AbstractEntity.php`:
+For that, we will add a new directory `src/App/src/Entity` in which we will add an abstract class, `AbstractEntity.php`:
 
 ```php
 <?php
@@ -470,7 +470,7 @@ The module is now registered.
 For the last step we will create a migration using our `bin/doctrine-migrations` file and then execute it:
 
 ```shell
-php bin/doctrine-migrations.php migrations:diff
+php bin/doctrine-migrations migrations:diff
 ```
 
 You should get an output similar to:
@@ -507,7 +507,7 @@ final class Version20251127183637 extends AbstractMigration
 We only have to execute the migrations now with the command:
 
 ```shell
-php bin/doctrine-migrations.php migrations:migrate
+php bin/doctrine-migrations migrations:migrate
 ```
 
 The output should be similar to this:
@@ -515,3 +515,18 @@ The output should be similar to this:
 ```terminaloutput
 [OK] Successfully migrated to version: Migrations\Version2025112718363
 ```
+
+### Summary
+
+- [Modified] src/App/src/ConfigProvider.php
+- [+] config/cli-config.php
+- [+] src/App/src/DBAL/Types/UuidType.php
+- [+] bin/doctrine-migrations
+- [+] src/App/src/Entity/AbstractEntity.php
+- [+] src/Book/src/Entity/Book.php
+- [+] src/App/src/Repository/AbstractRepository.php
+- [+] src/App/src/Book/BookRepository.php
+- [+] src/Book/src/ConfigProvider.php
+- [Modified] config/config.php
+- [Modified] composer.json
+- [+] src/App/src/Migration/Version{date_time}.php

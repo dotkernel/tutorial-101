@@ -165,7 +165,6 @@ private function getDoctrineConfig(): array
 Now that everything has been configured we only need to do one last thing, to create an executable for the Doctrine CLI.
 In our case we will create a `doctrine` file inside the application's `bin` directory:
 
-![doctrine](images/chapter-1/doctrine.png)
 
 ```php
 #!/usr/bin/env php
@@ -207,3 +206,10 @@ Options:
   -n, --no-interaction  Do not ask any interactive question
   -v|vv|vvv, --verbose  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
 ```
+
+### Summary
+
+- [Modified] composer.json
+- [Modified] config/autoload/local.php
+- [Modified] src/App/src/ConfigProvider.php
+- [+] bin/doctrine
