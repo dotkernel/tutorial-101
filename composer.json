@@ -52,7 +52,8 @@
     "autoload": {
         "psr-4": {
             "Light\\App\\": "src/App/src/",
-            "Light\\Page\\": "src/Page/src/"
+            "Light\\Page\\": "src/Page/src/",
+            "Light\\Book\\": "src/Book/src/"
         }
     },
     "autoload-dev": {

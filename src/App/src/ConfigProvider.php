@@ -6,24 +6,72 @@ namespace Light\App;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\Mapping\Driver\MappingDriver;
 use Doctrine\Persistence\Mapping\Driver\MappingDriverChain;
 use Dot\Cache\Adapter\ArrayAdapter;
 use Dot\Cache\Adapter\FilesystemAdapter;
+use Light\App\DBAL\Types\UuidType;
 use Light\App\Factory\GetIndexViewHandlerFactory;
 use Light\App\Handler\GetIndexViewHandler;
 use Mezzio\Application;
-use Ramsey\Uuid\Doctrine\UuidType;
 use Roave\PsrContainerDoctrine\EntityManagerFactory;
+use Symfony\Component\Cache\Adapter\AdapterInterface;
 
 use function getcwd;
 
+/**
+ * @phpstan-type ConfigType array{
+ *      dependencies: DependenciesType,
+ *      doctrine: DoctrineConfigType,
+ * }
+ * @phpstan-type DoctrineConfigType array{
+ *      cache: array{
+ *          array: array{
+ *              class: class-string<AdapterInterface>,
+ *          },
+ *          filesystem: array{
+ *              class: class-string<AdapterInterface>,
+ *              directory: non-empty-string,
+ *              namespace: non-empty-string,
+ *          },
+ *      },
+ *      configuration: array{
+ *          orm_default: array{
+ *              result_cache: non-empty-string,
+ *              metadata_cache: non-empty-string,
+ *              query_cache: non-empty-string,
+ *              hydration_cache: non-empty-string,
+ *              typed_field_mapper: non-empty-string|null,
+ *              second_level_cache: array{
+ *                  enabled: bool,
+ *                  default_lifetime: int,
+ *                  default_lock_lifetime: int,
+ *                  file_lock_region_directory: string,
+ *                  regions: string[],
+ *               },
+ *          },
+ *      },
+ *      driver: array{
+ *          orm_default: array{
+ *              class: class-string<MappingDriver>,
+ *          },
+ *      },
+ *      migrations: array{
+ *          migrations_paths: array<non-empty-string, non-empty-string>,
+ *          all_or_nothing: bool,
+ *          check_database_platform: bool,
+ *      },
+ *      types: array<non-empty-string, class-string>,
+ * }
+ * @phpstan-type DependenciesType array{
+ *       factories: array<class-string|non-empty-string, class-string|non-empty-string>,
+ *       aliases: array<class-string|non-empty-string, class-string|non-empty-string>,
+ * }
+ **/
 class ConfigProvider
 {
     /**
-    @return array{
-     *     dependencies: array<mixed>,
-     *     templates: array<mixed>,
-     * }
+     * @return ConfigType
      */
     public function __invoke(): array
     {
@@ -35,10 +83,7 @@ class ConfigProvider
     }
 
     /**
-     * @return array{
-     *     delegators: array<class-string, array<class-string>>,
-     *     factories: array<class-string, class-string>,
-     * }
+     * @return DependenciesType
      */
     public function getDependencies(): array
     {
@@ -81,6 +126,9 @@ class ConfigProvider
         ];
     }
 
+    /**
+     * @return DoctrineConfigType
+     */
     private function getDoctrineConfig(): array
     {
         return [
@@ -116,6 +164,21 @@ class ConfigProvider
                 'orm_default' => [
                     'class' => MappingDriverChain::class,
                 ],
+            ],
+            'migrations'    => [
+                'table_storage' => [
+                    'table_name'                 => 'doctrine_migration_versions',
+                    'version_column_name'        => 'version',
+                    'version_column_length'      => 191,
+                    'executed_at_column_name'    => 'executed_at',
+                    'execution_time_column_name' => 'execution_time',
+                ],
+                // Modify this line based on where you would like to have your migrations
+                'migrations_paths'        => [
+                    'Migrations' => 'src/App/src/Migration',
+                ],
+                'all_or_nothing'          => true,
+                'check_database_platform' => true,
             ],
             'types'         => [
                 UuidType::NAME => UuidType::class,
