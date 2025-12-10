@@ -87,7 +87,7 @@ class ConfigProvider
     }
 
     /**
-    @return array{
+     * @return array{
      *     paths: array{page: array{literal-string&non-falsy-string}}
      * }
      */
