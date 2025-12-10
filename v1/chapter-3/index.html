@@ -18,11 +18,11 @@
         <meta name="docsearch:component" content="Dotkernel 101">
 
         
-        <link rel="canonical" href="https://docs.dotkernel.org/tutorial-101/v1/chapter-1/">
+        <link rel="canonical" href="https://docs.dotkernel.org/tutorial-101/v1/chapter-3/">
         
         <link rel="shortcut icon" href="https://docs.dotkernel.org/img/dk_docs_favicon_white.svg">
 
-        <title>1. Installing Doctrine - Dotkernel 101 - Dotkernel Documentation</title>
+        <title>3. Fixtures and Custom Listing - Dotkernel 101 - Dotkernel Documentation</title>
 
         <link rel="stylesheet" href="https://docs.dotkernel.org/css/bootstrap.css">
         <link rel="stylesheet" href="https://docs.dotkernel.org/css/bootstrap-icons.min.css">
@@ -172,7 +172,7 @@
                         
                     
 
-                    <li class="breadcrumb-item active" aria-current="page">1. Installing Doctrine</li>
+                    <li class="breadcrumb-item active" aria-current="page">3. Fixtures and Custom Listing</li>
                 
             
         </ol>
@@ -212,8 +212,8 @@
 
                                     
                                         
-<li class="subnavigation__list-item subnavigation__list-item--active">
-    <a href="./" class="subnavigation__link">1. Installing Doctrine</a>
+<li class="subnavigation__list-item ">
+    <a href="../chapter-1/" class="subnavigation__link">1. Installing Doctrine</a>
 </li>
 
                                     
@@ -224,8 +224,8 @@
 
                                     
                                         
-<li class="subnavigation__list-item ">
-    <a href="../chapter-3/" class="subnavigation__link">3. Fixtures and Custom Listing</a>
+<li class="subnavigation__list-item subnavigation__list-item--active">
+    <a href="./" class="subnavigation__link">3. Fixtures and Custom Listing</a>
 </li>
 
                                     
@@ -252,15 +252,35 @@
             <ul class="toc__list">
             
                 <li class="toc__entry">
-                    <a href="#composer-requirements" class="toc__link nav-link">Composer Requirements</a>
+                    <a href="#repository-logic-update" class="toc__link nav-link">Repository Logic Update</a>
                 </li>
             
                 <li class="toc__entry">
-                    <a href="#setting-up-doctrine" class="toc__link nav-link">Setting Up Doctrine</a>
+                    <a href="#setting-up-the-route" class="toc__link nav-link">Setting up the Route</a>
                 </li>
             
                 <li class="toc__entry">
-                    <a href="#running-doctrine" class="toc__link nav-link">Running doctrine</a>
+                    <a href="#handling-the-request" class="toc__link nav-link">Handling the Request</a>
+                </li>
+            
+                <li class="toc__entry">
+                    <a href="#twig-template-for-book-listing" class="toc__link nav-link">Twig Template for Book Listing</a>
+                </li>
+            
+                <li class="toc__entry">
+                    <a href="#registering-our-changes" class="toc__link nav-link">Registering our Changes</a>
+                </li>
+            
+                <li class="toc__entry">
+                    <a href="#populating-the-table" class="toc__link nav-link">Populating the Table</a>
+                </li>
+            
+                <li class="toc__entry">
+                    <a href="#doctrine-fixtures" class="toc__link nav-link">Doctrine Fixtures</a>
+                </li>
+            
+                <li class="toc__entry">
+                    <a href="#listing-result" class="toc__link nav-link">Listing Result</a>
                 </li>
             
             </ul>
@@ -281,66 +301,153 @@
 <!--        <h2 class="chapter__headline text-black-50">Tutorial</h2>-->
     
 
-    <h1 id="installing-doctrine">Installing Doctrine</h1>
-<h2 id="composer-requirements">Composer Requirements</h2>
-<p>The first step is to add alongside your current packages the required entries for our Doctrine installation.
-We would add the following to our <code>composer.json</code> file located in our root folder:</p>
-<p><img alt="composer.json" src="../images/chapter-1/composer.png" class="img-responsive"/></p>
-<pre class="highlight"><code class="language-text">"dotkernel/dot-cache": "^4.0",
-"ramsey/uuid": "^4.5.0",
-"ramsey/uuid-doctrine": "^2.1.0",
-"roave/psr-container-doctrine": "^5.2.2 || ^6.0.0",</code></pre>
-<p><code>dotkernel/dot-cache</code></p>
-<p>Provides caching support for Dotkernel applications.
-It offers a PSR-6 and PSR-16 compatible caching system that integrates smoothly with Dotkernel's service container.</p>
-<p><code>ramsey/uuid</code></p>
-<p>A widely used PHP library for generating and working with UUIDs (Universally Unique Identifiers).
-It supports multiple UUID versions.</p>
-<p><code>ramsey/uuid-doctrine</code></p>
-<p>Adds UUID support to Doctrine ORM using ramsey/uuid.
-It allows Doctrine to store and retrieve UUIDs as proper value objects instead of plain strings, improving type safety.</p>
-<p><code>roave/psr-container-doctrine</code></p>
-<p>Provides a set of factory classes that integrate Doctrine ORM with any PSR-11 container.
-It simplifies wiring Doctrine EntityManager, DBAL, configuration, and related services in frameworks like Dotkernel.</p>
-<p><code>phpstan/phpstan-doctrine (dev requirement)</code></p>
-<p>An extension for PHPStan that improves static analysis for Doctrine.
-It understands entity metadata, repositories, and common Doctrine patterns, helping catch errors during development.</p>
-<h2 id="setting-up-doctrine">Setting Up Doctrine</h2>
-<p>After successfully installing our dependencies, we now need to configure our Doctrine instance.</p>
-<h3 id="declare-your-database">Declare your database</h3>
-<p>In the file <code>config/autoload/local.php</code> the structure would be updated like this:</p>
-<p><img alt="local.php" src="../images/chapter-1/local.png" class="img-responsive"/></p>
-<pre class="highlight"><code class="language-php">$databases = [
-    'default' =&gt; [
-        'host'     =&gt; 'localhost',
-        'dbname'   =&gt; 'light',
-        'user'     =&gt; 'root',
-        'password' =&gt; '123',
-        'port'     =&gt; 3306,
-        'driver'   =&gt; 'pdo_mysql',
-        'charset'  =&gt; 'utf8mb4',
-        'collate'  =&gt; 'utf8mb4_general_ci',
-    ],
-    // you can add more database connections into this array
-];
+    <h1 id="fixtures-and-custom-listing">Fixtures and Custom Listing</h1>
+<p>In the previous chapter, after we have created our Entities we have talked briefly about their related Repositories.
+In this chapter we are going to have a closer look at them along with a custom listing of our books.</p>
+<h2 id="repository-logic-update">Repository Logic Update</h2>
+<p>Our goal is to create two custom functions that would retrieve the titles and the authors separately from each book.
+In <code>src/Book/src/Respository/BookRepository.php</code> we should add the following code:</p>
+<p><img alt="book-repository" src="../images/chapter-3/book-repository.png" class="img-responsive"/></p>
+<pre class="highlight"><code class="language-php">/**
+ * @return array&lt;int, array{id: non-empty-string, title: string}&gt;
+ */
+public function getTitles(): array
+{
+    $qb = $this-&gt;getQueryBuilder()
+        -&gt;select('book.id, book.title')
+        -&gt;from(Book::class, 'book');
 
-return [
-    'databases'   =&gt; $databases,
-    'doctrine'    =&gt; [
-        'connection' =&gt; [
-            'orm_default' =&gt; [
-                'params' =&gt; $databases['default'],
-            ],
-        ],
-    ],
-    // the rest of your configuration
-];</code></pre>
-<h3 id="declare-the-doctrine-drivers">Declare the Doctrine Drivers</h3>
-<p>With the very nice utility of the package <code>laminas/laminas-config-aggregator</code> we can declare our doctrine settings in the <code>src/App/src/ConfigProvider.php</code> file.
-This package takes all the provided configs from the <code>config/config.php</code> file and merges them into one.</p>
-<p>Our new <code>src/App/src/ConfigProvider.php</code> class would look like this now:</p>
-<p><img alt="config-provider-1" src="../images/chapter-1/config-provider-1.png" class="img-responsive"/></p>
-<p><img alt="config-provider-2" src="../images/chapter-1/config-provider-2.png" class="img-responsive"/></p>
+    return $qb-&gt;getQuery()-&gt;getResult();
+}
+
+/**
+ * @return array&lt;int, array{id: non-empty-string, author: string}&gt;
+ */
+public function getAuthors(): array
+{
+    $qb = $this-&gt;getQueryBuilder()
+        -&gt;select('book.id, book.author')
+        -&gt;from(Book::class, 'book');
+
+    return $qb-&gt;getQuery()-&gt;getResult();
+}</code></pre>
+<p>The functions listed above will <strong>retrieve</strong> the <code>title</code>/<code>author</code> along with the <code>ID</code> of the Book database row for reference.</p>
+<h2 id="setting-up-the-route">Setting up the Route</h2>
+<p>We will now work on setting up the route from our new module through which we will display our data.
+For this tutorial our route will be <code>{{base_url}}/books</code>.</p>
+<p>In order to register this path we need to create a <code>RoutesDelegator.php</code> file in <code>src/Book/src</code>.</p>
+<pre class="highlight"><code class="language-php">&lt;?php
+
+declare(strict_types=1);
+
+namespace Light\Book;
+
+use Light\Book\Handler\GetBooksHandler;
+use Mezzio\Application;
+use Psr\Container\ContainerInterface;
+
+use function assert;
+
+class RoutesDelegator
+{
+    public function __invoke(ContainerInterface $container, string $serviceName, callable $callback): Application
+    {
+        $app = $callback();
+        assert($app instanceof Application);
+
+        $app-&gt;get('/books', [GetBooksHandler::class], 'books::list');
+
+        return $app;
+    }
+}</code></pre>
+<h2 id="handling-the-request">Handling the Request</h2>
+<p>Now that the route exists, we need to create the class that will handle our request.
+Create a new directory <code>src/Book/src/Handler</code> and create the file <code>GetBooksHandler.php</code>.</p>
+<pre class="highlight"><code class="language-php">&lt;?php
+
+declare(strict_types=1);
+
+namespace Light\Book\Handler;
+
+use Laminas\Diactoros\Response\HtmlResponse;
+use Light\Book\Repository\BookRepository;
+use Mezzio\Template\TemplateRendererInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+
+class GetBooksHandler implements RequestHandlerInterface
+{
+    public function __construct(
+        protected TemplateRendererInterface $template,
+        protected BookRepository $bookRepository,
+    ) {
+    }
+
+    public function handle(ServerRequestInterface $request): ResponseInterface
+    {
+        $titles  = $this-&gt;bookRepository-&gt;getTitles();
+        $authors = $this-&gt;bookRepository-&gt;getAuthors();
+
+        return new HtmlResponse(
+            $this-&gt;template-&gt;render('page::books', [
+                'titles'  =&gt; $titles,
+                'authors' =&gt; $authors,
+            ])
+        );
+    }
+}</code></pre>
+<p>The custom functions that we have created in the <code>BookRepository.php</code> retrieve our desired values and pass it to the <code>books</code> HTML template that is being rendered.
+We will crate the HTML file in the next part of this chapter.</p>
+<h2 id="twig-template-for-book-listing">Twig Template for Book Listing</h2>
+<p>The <code>books</code> template is currently missing, we now need to create it under the following path: <code>src/Book/src/templates/page/books.html.twig</code>.</p>
+<pre class="highlight"><code class="language-html">{% extends '@layout/default.html.twig' %}
+
+{% block title %}Books{% endblock %}
+
+{% block content %}
+    &lt;div class="container"&gt;
+        &lt;h2&gt;Book Titles&lt;/h2&gt;
+        &lt;table class="table table-bordered" style="table-layout: fixed;"&gt;
+            &lt;thead&gt;
+            &lt;tr&gt;
+                &lt;th&gt;Book ID&lt;/th&gt;
+                &lt;th&gt;Title&lt;/th&gt;
+            &lt;/tr&gt;
+            &lt;/thead&gt;
+            &lt;tbody&gt;
+            {% for title in titles %}
+                &lt;tr&gt;
+                    &lt;td&gt;{{ title.id }}&lt;/td&gt;
+                    &lt;td&gt;{{ title.title }}&lt;/td&gt;
+                &lt;/tr&gt;
+            {% endfor %}
+            &lt;/tbody&gt;
+        &lt;/table&gt;
+
+        &lt;h2&gt;Book Authors&lt;/h2&gt;
+        &lt;table class="table table-bordered" style="table-layout: fixed;"&gt;
+            &lt;thead&gt;
+            &lt;tr&gt;
+                &lt;th&gt;Book ID&lt;/th&gt;
+                &lt;th&gt;Author&lt;/th&gt;
+            &lt;/tr&gt;
+            &lt;/thead&gt;
+            &lt;tbody&gt;
+            {% for author in authors %}
+                &lt;tr&gt;
+                    &lt;td&gt;{{ author.id }}&lt;/td&gt;
+                    &lt;td&gt;{{ author.author }}&lt;/td&gt;
+                &lt;/tr&gt;
+            {% endfor %}
+            &lt;/tbody&gt;
+        &lt;/table&gt;
+    &lt;/div&gt;
+{% endblock %}</code></pre>
+<h2 id="registering-our-changes">Registering our Changes</h2>
+<p>Now that our route, handler, repository methods and view are ready, we need to <strong>register them so the application can use them</strong>.
+In <code>src/Book/src/ConfigProvider.php</code> we need to add the following changes:</p>
+<p><img alt="book-config" src="images/chapter-3/book-config.png" class="img-responsive"/></p>
 <pre class="highlight"><code class="language-php">public function __invoke(): array
 {
     return [
@@ -350,7 +457,7 @@ This package takes all the provided configs from the <code>config/config.php</co
     ];
 }
 
-public function getDependencies(): array
+private function getDependencies(): array
 {
     return [
         'delegators' =&gt; [
@@ -359,96 +466,213 @@ public function getDependencies(): array
             ],
         ],
         'factories'  =&gt; [
-            'doctrine.entity_manager.orm_default' =&gt; EntityManagerFactory::class,
-            GetIndexViewHandler::class            =&gt; GetIndexViewHandlerFactory::class,
-        ],
-        'aliases'    =&gt; [
-            EntityManager::class          =&gt; 'doctrine.entity_manager.orm_default',
-            EntityManagerInterface::class =&gt; 'doctrine.entity_manager.orm_default',
+            GetBooksHandler::class =&gt; BookHandlerFactory::class,
+            BookRepository::class  =&gt; BookRepositoryFactory::class,
         ],
     ];
 }
 
-private function getDoctrineConfig(): array
+/**
+ * @return array{
+ *     paths: array{page: array{literal-string&amp;non-falsy-string}}
+ * }
+ */
+private function getTemplates(): array
 {
     return [
-        'cache'         =&gt; [
-            'array'      =&gt; [
-                'class' =&gt; ArrayAdapter::class,
-            ],
-            'filesystem' =&gt; [
-                'class'     =&gt; FilesystemAdapter::class,
-                'directory' =&gt; getcwd() . '/data/cache',
-                'namespace' =&gt; 'doctrine',
-            ],
-        ],
-        'configuration' =&gt; [
-            'orm_default' =&gt; [
-                'result_cache'       =&gt; 'filesystem',
-                'metadata_cache'     =&gt; 'filesystem',
-                'query_cache'        =&gt; 'filesystem',
-                'hydration_cache'    =&gt; 'array',
-                'typed_field_mapper' =&gt; null,
-                'second_level_cache' =&gt; [
-                    'enabled'                    =&gt; true,
-                    'default_lifetime'           =&gt; 3600,
-                    'default_lock_lifetime'      =&gt; 60,
-                    'file_lock_region_directory' =&gt; '',
-                    'regions'                    =&gt; [],
-                ],
-            ],
-        ],
-        'driver'        =&gt; [
-            // The default metadata driver aggregates all other drivers into a single one.
-            // Override `orm_default` only if you know what you're doing.
-            'orm_default' =&gt; [
-                'class' =&gt; MappingDriverChain::class,
-            ],
-        ],
-        'types'         =&gt; [
-            UuidType::NAME =&gt; UuidType::class,
+        'paths' =&gt; [
+            'page' =&gt; [__DIR__ . '/../templates/page'],
         ],
     ];
 }</code></pre>
-<h2 id="running-doctrine">Running doctrine</h2>
-<p>Now that everything has been configured we only need to do one last thing, to create an executable for the Doctrine CLI.
-In our case we will create a <code>doctrine</code> file inside the application's <code>bin</code> directory:</p>
+<p>In Dotkernel (and Mezzio/Laminas in general), most classes cannot be created directly with new ClassName() because they require dependencies (such as the template engine or a repository).
+To provide those dependencies, we create Factory classes.</p>
+<p>A factory’s only responsibility is to build an object with everything it needs.
+For that, we have created two factories - one for our Handler and one for our Repository.</p>
+<p><code>src/App/src/Factory/BookHandlerFactory.php</code>:</p>
+<pre class="highlight"><code class="language-php">&lt;?php
+
+declare(strict_types=1);
+
+namespace Light\App\Factory;
+
+use Light\Book\Handler\GetBooksHandler;
+use Light\Book\Repository\BookRepository;
+use Mezzio\Template\TemplateRendererInterface;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
+
+use function assert;
+
+class BookHandlerFactory
+{
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function __invoke(ContainerInterface $container, string $requestedName): GetBooksHandler
+    {
+        $repository = $container-&gt;get(BookRepository::class);
+        $template   = $container-&gt;get(TemplateRendererInterface::class);
+
+        assert($repository instanceof BookRepository);
+        assert($template instanceof TemplateRendererInterface);
+
+        return new GetBooksHandler($template, $repository);
+    }
+}</code></pre>
+<p><code>src/App/src/Factory/BookRepositoryFactory.php</code>:</p>
+<pre class="highlight"><code class="language-php">&lt;?php
+
+declare(strict_types=1);
+
+namespace Light\App\Factory;
+
+use Doctrine\ORM\EntityManager;
+use Light\Book\Entity\Book;
+use Light\Book\Repository\BookRepository;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
+
+use function assert;
+
+class BookRepositoryFactory
+{
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function __invoke(ContainerInterface $container): BookRepository
+    {
+        $entityManager = $container-&gt;get(EntityManager::class);
+
+        $repository = $entityManager-&gt;getRepository(Book::class);
+        assert($repository instanceof BookRepository);
+
+        return $repository;
+    }
+}</code></pre>
+<p>All the changes are now registered.</p>
+<h2 id="populating-the-table">Populating the Table</h2>
+<p>In order to have values for us to display, we now have to populate our <code>books</code> table from our database with some values.
+There are two options in this case:</p>
+<ul>
+<li>Use Doctrine Fixtures</li>
+<li>Add entries manually from the Database Client.</li>
+</ul>
+<p><strong>We recommend using fixtures</strong>, but if you choose the alternative approach, feel free to skip directly to the <a href="#listing-result">final</a> section of this chapter.</p>
+<h2 id="doctrine-fixtures">Doctrine Fixtures</h2>
+<p>Doctrine Fixtures are tools that let us preload sample data into the database.
+They make it easy to populate entities automatically, so we can test and develop our application without adding data manually.</p>
+<p>Our first step is to add our required Doctrine packages to our <code>composer.json</code> file:</p>
+<p><img alt="composer-fixtures" src="../images/chapter-3/composer-fixtures.png" class="img-responsive"/></p>
+<pre class="highlight"><code class="language-text">"doctrine/data-fixtures": "^2.2",
+"doctrine/doctrine-fixtures-bundle": "^4.3",</code></pre>
+<p>After importing our packages, we need to register the path for our Fixture files in <code>src/App/src/ConfigProvider.php</code>.</p>
+<p><img alt="config-fixtures" src="../images/chapter-3/config-fixtures.png" class="img-responsive"/></p>
+<pre class="highlight"><code class="language-php">'fixtures' =&gt; getcwd() . '/src/App/src/Fixture',</code></pre>
+<p>We now need to create our Fixture Loader in <code>src/App/src/Fixture/BookLoader.php</code>:</p>
+<pre class="highlight"><code class="language-php">&lt;?php
+
+declare(strict_types=1);
+
+namespace Light\App\Fixture;
+
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Persistence\ObjectManager;
+use Light\Book\Entity\Book;
+
+class BookLoader extends Fixture
+{
+    public function load(ObjectManager $manager): void
+    {
+        $book1 = new Book();
+        $book1-&gt;setTitle('A Game of Thrones');
+        $book1-&gt;setAuthor('George Martin');
+        $manager-&gt;persist($book1);
+
+        $book2 = new Book();
+        $book2-&gt;setTitle('The Lord of the Rings');
+        $book2-&gt;setAuthor('J.R.R. Tolkien');
+        $manager-&gt;persist($book2);
+
+        $book3 = new Book();
+        $book3-&gt;setTitle('Dune');
+        $book3-&gt;setAuthor('Frank Herbert');
+        $manager-&gt;persist($book3);
+
+        $manager-&gt;flush();
+    }
+}</code></pre>
+<p>For our last step we only need to create an executable for our fixtures in <code>bin/doctrine-fixtures</code>:</p>
 <pre class="highlight"><code class="language-php">#!/usr/bin/env php
 &lt;?php
 
 declare(strict_types=1);
 
+use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
+use Doctrine\Common\DataFixtures\Loader;
+use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Tools\Console\ConsoleRunner;
-use Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider;
 
 require_once 'vendor/autoload.php';
 
 $container = require 'config/container.php';
 
 $entityManager = $container-&gt;get(EntityManager::class);
-$entityManager-&gt;getEventManager();
+$config        = $container-&gt;get('config');
 
-ConsoleRunner::run(new SingleManagerProvider($entityManager));</code></pre>
-<p>Now by running the command bellow we should see the Doctrine CLI version alongside its available commands:</p>
-<pre class="highlight"><code class="language-shell">php ./bin/doctrine</code></pre>
-<p>Example (truncated) output:</p>
-<pre class="highlight"><code class="language-terminaloutput">Doctrine Command Line Interface 3.5.7.0
+// Get fixtures directory from config
+$fixturesPath = $config['doctrine']['fixtures'];
 
-Options:
-  -h, --help            Display help for the given command. When no command is given display help for the list command
-      --silent          Do not output any message
-  -q, --quiet           Only errors are displayed. All other output is suppressed
-  -V, --version         Display this application version
-      --ansi|--no-ansi  Force (or disable --no-ansi) ANSI output
-  -n, --no-interaction  Do not ask any interactive question
-  -v|vv|vvv, --verbose  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug</code></pre>
+if (! is_dir($fixturesPath)) {
+    echo "Fixtures directory not found: {$fixturesPath}\n";
+    exit(1);
+}
+
+// Load fixtures
+$loader = new Loader();
+$loader-&gt;loadFromDirectory($fixturesPath);
+
+// Execute fixtures
+$purger   = new ORMPurger();
+$executor = new ORMExecutor($entityManager, $purger);
+
+echo "Loading fixtures from: {$fixturesPath}\n";
+
+$executor-&gt;execute($loader-&gt;getFixtures());
+
+echo "Fixtures loaded successfully!\n";</code></pre>
+<p>Now we can run:</p>
+<pre class="highlight"><code class="language-shell">php bin/doctrine-fixtures</code></pre>
+<p>The output should be similar to this:</p>
+<pre class="highlight"><code class="language-terminaloutput">Loading fixtures from: {{ your_path }}
+Fixtures loaded successfully!</code></pre>
+<h2 id="listing-result">Listing Result</h2>
+<p>In order to see your changes either go to <code>{{base_url}}/books</code> in your browser or you can add for example a button in <code>src/App/templates/layout/default.html</code>.</p>
+<p><img alt="button" src="../images/chapter-3/button.png" class="img-responsive"/></p>
+<pre class="highlight"><code class="language-html">&lt;a class="dropdown-item" href="{{ url('books::list') }}"&gt;Books&lt;/a&gt;</code></pre>
+<p>We should now see a page similar to the following:</p>
+<p><img alt="tables" src="../images/chapter-3/tables.png" class="img-responsive"/></p>
 <h3 id="summary">Summary</h3>
 <ul>
+<li>[Modified] src/Book/src/Repository/BookRepository.php</li>
+<li>[+] src/Book/src/RoutesDelegator.php</li>
+<li>[+] src/Book/src/Handler/GetBooksHandler.php</li>
+<li>[+] src/Book/templates/page/books.html.twig</li>
+<li>[Modified] src/Book/src/ConfigProvider.php</li>
+<li>[+] src/App/src/Factory/BookHandlerFactory.php</li>
+<li>[+] src/App/src/Factory/BookRepositoryFactory.php</li>
+</ul>
+<p>Fixtures (Optional):</p>
+<ul>
 <li>[Modified] composer.json</li>
-<li>[Modified] config/autoload/local.php</li>
 <li>[Modified] src/App/src/ConfigProvider.php</li>
-<li>[+] bin/doctrine</li>
+<li>[+] src/App/src/Fixture/BookLoader.php</li>
+<li>[+] bin/doctrine-fixtures</li>
+<li>[Modified] src/App/templates/layout/default.html.twig</li>
 </ul>
 
 
@@ -459,20 +683,15 @@ Options:
         
         <li class="col text-nowrap text-md-start">
             
-                <a rel="prev" class="page-nav__link page-nav__link--prev" href="../introduction/">
+                <a rel="prev" class="page-nav__link page-nav__link--prev" href="../chapter-2/">
                     <i class="bi bi-chevron-left"></i>
-                    Introduction
+                    2. Entities and Migrations
                 </a>
             
         </li>
 
         
         <li class="col text-nowrap text-md-end pe-0">
-            
-                <a rel="next" class="page-nav__link page-nav__link--next" href="../chapter-2/">
-                    2. Entities and Migrations
-                    <i class="bi bi-chevron-right"></i>
-                </a>
             
         </li>
     </ul>

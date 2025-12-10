@@ -223,6 +223,12 @@
 </li>
 
                                     
+                                        
+<li class="subnavigation__list-item ">
+    <a href="../chapter-3/" class="subnavigation__link">3. Fixtures and Custom Listing</a>
+</li>
+
+                                    
                                 </ul>
                             </li>
                         
@@ -397,7 +403,7 @@ require __DIR__ . '/../vendor/doctrine/migrations/bin/doctrine-migrations.php';<
 <h2 id="creating-our-entities">Creating our Entities</h2>
 <p>Now that we have set up the Doctrine Migrations, we shall now start working on our entities.</p>
 <p>We need to create a base for our entities so that they have the same starting point.
-For that, we will add a new directory <code>src/App/src/Entiy</code> in which we will add an abstract class, <code>AbstractEntity.php</code>:</p>
+For that, we will add a new directory <code>src/App/src/Entity</code> in which we will add an abstract class, <code>AbstractEntity.php</code>:</p>
 <pre class="highlight"><code class="language-php">&lt;?php
 
 declare(strict_types=1);
@@ -687,7 +693,7 @@ We just add it in our <code>composer.json</code> file by adding <code>"Light\\Bo
 <p>The module is now registered.</p>
 <h3 id="step-3">Step 3</h3>
 <p>For the last step we will create a migration using our <code>bin/doctrine-migrations</code> file and then execute it:</p>
-<pre class="highlight"><code class="language-shell">php bin/doctrine-migrations.php migrations:diff</code></pre>
+<pre class="highlight"><code class="language-shell">php bin/doctrine-migrations migrations:diff</code></pre>
 <p>You should get an output similar to:</p>
 <pre class="highlight"><code class="language-terminaloutput">Generated new migration class to "src/App/src/Migration/Version20251127183637.php"</code></pre>
 <p>The <code>migrations:diff</code> flag tells Doctrine to compare our current database schema and create a file in which the differences will be transformed into SQL syntax.
@@ -712,9 +718,24 @@ Inside this file you should have something similar to:</p>
     }
 }</code></pre>
 <p>We only have to execute the migrations now with the command:</p>
-<pre class="highlight"><code class="language-shell">php bin/doctrine-migrations.php migrations:migrate</code></pre>
+<pre class="highlight"><code class="language-shell">php bin/doctrine-migrations migrations:migrate</code></pre>
 <p>The output should be similar to this:</p>
 <pre class="highlight"><code class="language-terminaloutput">[OK] Successfully migrated to version: Migrations\Version2025112718363</code></pre>
+<h3 id="summary">Summary</h3>
+<ul>
+<li>[Modified] src/App/src/ConfigProvider.php</li>
+<li>[+] config/cli-config.php</li>
+<li>[+] src/App/src/DBAL/Types/UuidType.php</li>
+<li>[+] bin/doctrine-migrations</li>
+<li>[+] src/App/src/Entity/AbstractEntity.php</li>
+<li>[+] src/Book/src/Entity/Book.php</li>
+<li>[+] src/App/src/Repository/AbstractRepository.php</li>
+<li>[+] src/App/src/Book/BookRepository.php</li>
+<li>[+] src/Book/src/ConfigProvider.php</li>
+<li>[Modified] config/config.php</li>
+<li>[Modified] composer.json</li>
+<li>[+] src/App/src/Migration/Version{date_time}.php</li>
+</ul>
 
 
 
@@ -733,6 +754,11 @@ Inside this file you should have something similar to:</p>
 
         
         <li class="col text-nowrap text-md-end pe-0">
+            
+                <a rel="next" class="page-nav__link page-nav__link--next" href="../chapter-3/">
+                    3. Fixtures and Custom Listing
+                    <i class="bi bi-chevron-right"></i>
+                </a>
             
         </li>
     </ul>
