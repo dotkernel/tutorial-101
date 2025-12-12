@@ -39,6 +39,16 @@ It simplifies wiring Doctrine EntityManager, DBAL, configuration, and related se
 An extension for PHPStan that improves static analysis for Doctrine.
 It understands entity metadata, repositories, and common Doctrine patterns, helping catch errors during development.
 
+### Update Composer Dependencies
+
+Run the following command to install the new required packages:
+
+```shell
+composer update
+```
+
+The command should be run whenever we change anything in our `composer.json` file.
+
 ## Setting Up Doctrine
 
 After successfully installing our dependencies, we now need to configure our Doctrine instance.
