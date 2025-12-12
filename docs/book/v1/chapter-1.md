@@ -47,7 +47,7 @@ Run the following command to install the new required packages:
 composer update
 ```
 
-This should be run whenever we change anything in our `composer.json` file.
+The command should be run whenever we change anything in our `composer.json` file.
 
 ## Setting Up Doctrine
 
