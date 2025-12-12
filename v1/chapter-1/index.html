@@ -305,6 +305,10 @@ It simplifies wiring Doctrine EntityManager, DBAL, configuration, and related se
 <p><code>phpstan/phpstan-doctrine (dev requirement)</code></p>
 <p>An extension for PHPStan that improves static analysis for Doctrine.
 It understands entity metadata, repositories, and common Doctrine patterns, helping catch errors during development.</p>
+<h3 id="update-composer-dependencies">Update Composer Dependencies</h3>
+<p>Run the following command to install the new required packages:</p>
+<pre class="highlight"><code class="language-shell">composer update</code></pre>
+<p>The command should be run whenever we change anything in our <code>composer.json</code> file.</p>
 <h2 id="setting-up-doctrine">Setting Up Doctrine</h2>
 <p>After successfully installing our dependencies, we now need to configure our Doctrine instance.</p>
 <h3 id="declare-your-database">Declare your database</h3>
